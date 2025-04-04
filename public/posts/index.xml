@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Posts on Internet, AI, ME and MY learnings!</title>
-    <link>http://localhost:1313/posts/</link>
-    <description>Recent content in Posts on Internet, AI, ME and MY learnings!</description>
+    <title>Posts on ME, AI, the worl wide web and MY learnings!</title>
+    <link>http://localhost:1313/blog/posts/</link>
+    <description>Recent content in Posts on ME, AI, the worl wide web and MY learnings!</description>
     <generator>Hugo -- 0.145.0</generator>
     <language>en-us</language>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/blog/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title></title>
-      <link>http://localhost:1313/posts/yourls-k8s-installation-guide/</link>
+      <link>http://localhost:1313/blog/posts/yourls-k8s-installation-guide/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/yourls-k8s-installation-guide/</guid>
+      <guid>http://localhost:1313/blog/posts/yourls-k8s-installation-guide/</guid>
       <description>&lt;h1 id=&#34;installing-yourls-on-kubernetes&#34;&gt;Installing YOURLS on Kubernetes&lt;/h1&gt;
 &lt;p&gt;This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.&lt;/p&gt;
 &lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
