@@ -1,4 +1,5 @@
 name: Publish to GH Pages
+
 on:
   push:
     branches:
@@ -8,6 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
@@ -21,14 +23,15 @@ jobs:
           ref: gh-pages
           path: built-site
 
-      - name: Setup Hugo
+      - name: Setup Hugo (v0.126.1)
         run: |
-          curl -L -o /tmp/hugo.tar.gz 'https://github.com/gohugoio/hugo/releases/download/v0.110.0/hugo_extended_0.110.0_linux-amd64.tar.gz'
+          curl -L -o /tmp/hugo.tar.gz 'https://github.com/gohugoio/hugo/releases/download/v0.126.1/hugo_extended_0.126.1_linux-amd64.tar.gz'
           tar -C ${RUNNER_TEMP} -zxvf /tmp/hugo.tar.gz hugo
-      - name: Build
+
+      - name: Build site
         run: ${RUNNER_TEMP}/hugo
 
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
         run: |
           cp -R public/* ${GITHUB_WORKSPACE}/built-site/
@@ -36,5 +39,6 @@ jobs:
           git add .
           git config user.name 'shashankrawlani'
           git config user.email 'shashank@rawlani.com'
-          git commit -m 'Updated site'
+          git commit -m 'Updated site' || echo "No changes to commit"
           git push
+
