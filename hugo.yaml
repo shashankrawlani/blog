@@ -1,3 +1,4 @@
-baseURL: https://blog.rawlani.com
+baseURL: "https://shashankrawlani.github.io/blog/"
 languageCode: en-us
-title: Internet, AI, ME and MY learnings!
+title: ME, AI, the worl wide web and MY learnings!
+theme: PaperMod
