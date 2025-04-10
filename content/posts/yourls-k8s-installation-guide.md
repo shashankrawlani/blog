@@ -1,3 +1,11 @@
+---
+title: 'Yourls K8s Installation Guide'
+date: '2025-04-05T04:27:19+05:30'
+draft: false
+tags: ["kubernetes", "k8s", "yourls", "letsencrypt", "url shortener"]
+categories: ["tutorial"]
+---
+
 # Installing YOURLS on Kubernetes
 
 This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.
