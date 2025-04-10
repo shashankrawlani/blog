@@ -1,13 +1,7 @@
 ---
 date: '2025-04-10T12:49:17+05:30'
 draft: false
-title: 'Lxc vs Lxd'
----
-
----
 title: "LXC vs. LXD: Understanding the Differences and Choosing the Right Tool"
-date: "2025-04-09"
-draft: false
 ---
 
 # LXC vs. LXD: Understanding the Differences and Choosing the Right Tool
