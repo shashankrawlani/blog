@@ -1,0 +1,155 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service | The world wide web, AI, me and my learnings!</title>
+<meta name=keywords content><meta name=description content="Setting Up LXD, LXC, and K3s with a Basic NGINX Test Service
+This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named maata-paarvati with 4 CPUs and 24 GB RAM.
+Prerequisites
+An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance).
+Root or sudo access.
+Network configured to allow TCP ports 80, 443, and 6443."><meta name=author content><link rel=canonical href=https://blog.rawlani.com/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/><link crossorigin=anonymous href=/assets/css/stylesheet.f49d66caae9ea0fd43f21f29e71a8d3e284517ed770f2aa86fa012953ad3c9ef.css integrity="sha256-9J1myq6eoP1D8h8p5xqNPihFF+13Dyqob6ASlTrTye8=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.rawlani.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.rawlani.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.rawlani.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.rawlani.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.rawlani.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://blog.rawlani.com/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:url" content="https://blog.rawlani.com/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/"><meta property="og:site_name" content="The world wide web, AI, me and my learnings!"><meta property="og:title" content="Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service"><meta property="og:description" content="Setting Up LXD, LXC, and K3s with a Basic NGINX Test Service This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named maata-paarvati with 4 CPUs and 24 GB RAM. Prerequisites
+An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance). Root or sudo access. Network configured to allow TCP ports 80, 443, and 6443."><meta property="og:locale" content="en-us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-04-21T17:35:27+05:30"><meta property="article:modified_time" content="2025-04-21T17:35:27+05:30"><meta name=twitter:card content="summary"><meta name=twitter:title content="Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service"><meta name=twitter:description content="Setting Up LXD, LXC, and K3s with a Basic NGINX Test Service
+This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named maata-paarvati with 4 CPUs and 24 GB RAM.
+Prerequisites
+An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance).
+Root or sudo access.
+Network configured to allow TCP ports 80, 443, and 6443."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.rawlani.com/posts/"},{"@type":"ListItem","position":2,"name":"Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service","item":"https://blog.rawlani.com/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service","name":"Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service","description":"Setting Up LXD, LXC, and K3s with a Basic NGINX Test Service This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named maata-paarvati with 4 CPUs and 24 GB RAM. Prerequisites\nAn Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance). Root or sudo access. Network configured to allow TCP ports 80, 443, and 6443.\n","keywords":[],"articleBody":"Setting Up LXD, LXC, and K3s with a Basic NGINX Test Service This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named maata-paarvati with 4 CPUs and 24 GB RAM. Prerequisites\nAn Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance). Root or sudo access. Network configured to allow TCP ports 80, 443, and 6443.\nInstall LXD Install LXD via Snap: sudo snap install lxd\nInitialize LXD:\nUse default settings for a simple setup: sudo lxd init –auto\nThis creates a dir storage pool (default) and a bridge network (lxdbr0).\nAdd User to LXD Group: sudo usermod -aG lxd ubuntu newgrp lxd\nVerify LXD: lxc list\nShould display an empty table initially.\nCreate a Kubernetes Profile for LXC Containers Create the Profile Configuration:\nSave this as k8s-profile.yaml: config: limits.cpu: “2” limits.memory: 2GB limits.memory.swap: “false” linux.kernel_modules: ip_tables,ip6_tables,nf_nat,overlay,br_netfilter raw.lxc: | lxc.apparmor.profile=unconfined lxc.cap.drop= lxc.cgroup.devices.allow=a lxc.mount.auto=proc:rw sys:rw security.privileged: “true” security.nesting: “true” security.syscalls.intercept.mknod: “true” security.syscalls.intercept.setxattr: “true” description: LXD profile for Kubernetes devices: eth0: name: eth0 nictype: bridged parent: lxdbr0 type: nic kmsg: path: /dev/kmsg source: /dev/console type: unix-char root: path: / pool: default type: disk name: k8s used_by: []\nThis matches your lxc config show kmaster –expanded output, excluding volatile and proxy settings added later.\nApply the Profile: lxc profile create k8s lxc profile edit k8s \u003c k8s-profile.yaml\nVerify Profile: lxc profile show k8s\nLaunch LXC Containers with Ubuntu 24.04 Initialize Containers: lxc init ubuntu:24.04 kmaster –profile k8s lxc init ubuntu:24.04 kworker1 –profile k8s lxc init ubuntu:24.04 kworker2 –profile k8s\nStart Containers: lxc start kmaster lxc start kworker1 lxc start kworker2\nVerify Containers: lxc list\nExample output (IPs will vary): +———+———+———————-+——+———–+———–+ | NAME | STATE | IPV4 | IPV6 | TYPE | SNAPSHOTS | +———+———+———————-+——+———–+———–+ | kmaster | RUNNING | 10.177.108.101 (eth0)| | CONTAINER | 0 | | kworker1| RUNNING | 10.177.108.79 (eth0) | | CONTAINER | 0 | | kworker2| RUNNING | 10.177.108.57 (eth0) | | CONTAINER | 0 | +———+———+———————-+——+———–+———–+\nInstall K3s and Join the Cluster Prepare kmaster: lxc exec kmaster – bash -c “apt update \u0026\u0026 apt install -y curl iptables”\nInstall K3s on kmaster:\nDisable Traefik to use NGINX Ingress later: lxc exec kmaster – bash -c “curl -sfL https://get.k3s.io | sh -s - server –disable=traefik –write-kubeconfig-mode 644”\nGet Node Token: lxc exec kmaster – cat /var/lib/rancher/k3s/server/node-token\nSave the token (e.g., K10…::server:…).\nPrepare and Join Worker Nodes:\nFor kworker1: lxc exec kworker1 – bash -c “apt update \u0026\u0026 apt install -y curl iptables” lxc exec kworker1 – bash -c “curl -sfL https://get.k3s.io | K3S_URL=https://10.177.108.101:6443 K3S_TOKEN= sh -”\nFor kworker2: lxc exec kworker2 – bash -c “apt update \u0026\u0026 apt install -y curl iptables” lxc exec kworker2 – bash -c “curl -sfL https://get.k3s.io | K3S_URL=https://10.177.108.101:6443 K3S_TOKEN= sh -”\nVerify Cluster: lxc exec kmaster – k3s kubectl get nodes\nExpected: NAME STATUS ROLES AGE VERSION kmaster Ready control-plane,master 5m v1.32.3+k3s1 kworker1 Ready 2m v1.32.3+k3s1 kworker2 Ready 1m v1.32.3+k3s1\nSet Up Host Access:\nInstall kubectl on the host: sudo snap install kubectl –classic\nCopy kubeconfig: lxc file pull kmaster/etc/rancher/k3s/k3s.yaml ~/.kube/config\nEdit ~/.kube/config, replace 127.0.0.1 with 10.177.108.101: server: https://10.177.108.101:6443\nTest: kubectl get nodes\nAdd Port Forwarding for K3s API: sudo iptables -t nat -A PREROUTING -p tcp –dport 6443 -j DNAT –to-destination 10.177.108.101:6443 sudo iptables -t nat -A POSTROUTING -j MASQUERADE sudo sysctl -w net.ipv4.ip_forward=1\nSet Up NGINX Ingress and Deploy a Test Service Install Helm: curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 sudo bash get_helm.sh\nInstall NGINX Ingress: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx helm repo update helm install ingress-nginx ingress-nginx/ingress-nginx –namespace ingress-nginx –create-namespace –set controller.service.type=LoadBalancer\nAdd Proxy Devices for HTTP/HTTPS:\nBased on your lxc config show kmaster –expanded: lxc config device add kmaster http proxy listen=tcp:0.0.0.0:80 connect=tcp:127.0.0.1:80 lxc config device add kmaster https proxy listen=tcp:0.0.0.0:443 connect=tcp:127.0.0.1:443\nAdd Port Forwarding for HTTP/HTTPS:\nGet NGINX service IP: kubectl get svc -n ingress-nginx\nExample: 10.177.108.x.\nForward ports: sudo iptables -t nat -A PREROUTING -p tcp –dport 80 -j DNAT –to-destination 10.177.108.x:80 sudo iptables -t nat -A PREROUTING -p tcp –dport 443 -j DNAT –to-destination 10.177.108.x:443 sudo iptables -t nat -A POSTROUTING -j MASQUERADE\nDeploy a Basic NGINX Test Service:\nCreate nginx-test.yaml: apiVersion: apps/v1 kind: Deployment metadata: name: nginx-test namespace: default spec: replicas: 1 selector: matchLabels: app: nginx-test template: metadata: labels: app: nginx-test spec: containers: - name: nginx image: nginx:latest ports: - containerPort: 80 apiVersion: v1 kind: Service metadata: name: nginx-test namespace: default spec: ports:\nport: 80 targetPort: 80 protocol: TCP selector: app: nginx-test apiVersion: networking.k8s.io/v1 kind: Ingress metadata: name: nginx-test namespace: default annotations: nginx.ingress.kubernetes.io/rewrite-target: / spec: ingressClassName: nginx rules:\nhost: nginx-test.local http: paths: path: / pathType: Prefix backend: service: name: nginx-test port: number: 80 Apply: kubectl apply -f nginx-test.yaml\nTest the NGINX Service:\nUpdate /etc/hosts on your local machine (temporary workaround since nginx-test.local isn’t a real domain): echo “ nginx-test.local” | sudo tee -a /etc/hosts\nUse your Oracle Cloud instance’s public IP (e.g., curl ifconfig.me).\nTest: curl http://nginx-test.local\nShould return the NGINX welcome page HTML.\nConclusion You now have a K3s cluster running inside LXC containers managed by LXD, with NGINX Ingress and a basic NGINX test service accessible at http://nginx-test.local. This setup leverages your Oracle Cloud Free Tier instance efficiently, with Traefik disabled and NGINX handling ingress traffic.\n","wordCount":"885","inLanguage":"en","datePublished":"2025-04-21T17:35:27+05:30","dateModified":"2025-04-21T17:35:27+05:30","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.rawlani.com/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/"},"publisher":{"@type":"Organization","name":"The world wide web, AI, me and my learnings!","logo":{"@type":"ImageObject","url":"https://blog.rawlani.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.rawlani.com/ accesskey=h title="The world wide web, AI, me and my learnings! (Alt + H)">The world wide web, AI, me and my learnings!</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service</h1><div class=post-meta><span title='2025-04-21 17:35:27 +0530 +0530'>April 21, 2025</span></div></header><div class=post-content><p>Setting Up LXD, LXC, and K3s with a Basic NGINX Test Service
+This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named maata-paarvati with 4 CPUs and 24 GB RAM.
+Prerequisites</p><p>An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance).
+Root or sudo access.
+Network configured to allow TCP ports 80, 443, and 6443.</p><ol><li>Install LXD</li></ol><p>Install LXD via Snap:
+sudo snap install lxd</p><p>Initialize LXD:</p><p>Use default settings for a simple setup:
+sudo lxd init &ndash;auto</p><p>This creates a dir storage pool (default) and a bridge network (lxdbr0).</p><p>Add User to LXD Group:
+sudo usermod -aG lxd ubuntu
+newgrp lxd</p><p>Verify LXD:
+lxc list</p><p>Should display an empty table initially.</p><ol start=2><li>Create a Kubernetes Profile for LXC Containers</li></ol><p>Create the Profile Configuration:</p><p>Save this as k8s-profile.yaml:
+config:
+limits.cpu: &ldquo;2&rdquo;
+limits.memory: 2GB
+limits.memory.swap: &ldquo;false&rdquo;
+linux.kernel_modules: ip_tables,ip6_tables,nf_nat,overlay,br_netfilter
+raw.lxc: |
+lxc.apparmor.profile=unconfined
+lxc.cap.drop=
+lxc.cgroup.devices.allow=a
+lxc.mount.auto=proc:rw sys:rw
+security.privileged: &ldquo;true&rdquo;
+security.nesting: &ldquo;true&rdquo;
+security.syscalls.intercept.mknod: &ldquo;true&rdquo;
+security.syscalls.intercept.setxattr: &ldquo;true&rdquo;
+description: LXD profile for Kubernetes
+devices:
+eth0:
+name: eth0
+nictype: bridged
+parent: lxdbr0
+type: nic
+kmsg:
+path: /dev/kmsg
+source: /dev/console
+type: unix-char
+root:
+path: /
+pool: default
+type: disk
+name: k8s
+used_by: []</p><p>This matches your lxc config show kmaster &ndash;expanded output, excluding volatile and proxy settings added later.</p><p>Apply the Profile:
+lxc profile create k8s
+lxc profile edit k8s &lt; k8s-profile.yaml</p><p>Verify Profile:
+lxc profile show k8s</p><ol start=3><li>Launch LXC Containers with Ubuntu 24.04</li></ol><p>Initialize Containers:
+lxc init ubuntu:24.04 kmaster &ndash;profile k8s
+lxc init ubuntu:24.04 kworker1 &ndash;profile k8s
+lxc init ubuntu:24.04 kworker2 &ndash;profile k8s</p><p>Start Containers:
+lxc start kmaster
+lxc start kworker1
+lxc start kworker2</p><p>Verify Containers:
+lxc list</p><p>Example output (IPs will vary):
++&mdash;&mdash;&mdash;+&mdash;&mdash;&mdash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;+&mdash;&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;&ndash;+
+| NAME | STATE | IPV4 | IPV6 | TYPE | SNAPSHOTS |
++&mdash;&mdash;&mdash;+&mdash;&mdash;&mdash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;+&mdash;&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;&ndash;+
+| kmaster | RUNNING | 10.177.108.101 (eth0)| | CONTAINER | 0 |
+| kworker1| RUNNING | 10.177.108.79 (eth0) | | CONTAINER | 0 |
+| kworker2| RUNNING | 10.177.108.57 (eth0) | | CONTAINER | 0 |
++&mdash;&mdash;&mdash;+&mdash;&mdash;&mdash;+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;+&mdash;&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;&ndash;+</p><ol start=4><li>Install K3s and Join the Cluster</li></ol><p>Prepare kmaster:
+lxc exec kmaster &ndash; bash -c &ldquo;apt update && apt install -y curl iptables&rdquo;</p><p>Install K3s on kmaster:</p><p>Disable Traefik to use NGINX Ingress later:
+lxc exec kmaster &ndash; bash -c &ldquo;curl -sfL <a href=https://get.k3s.io>https://get.k3s.io</a> | sh -s - server &ndash;disable=traefik &ndash;write-kubeconfig-mode 644&rdquo;</p><p>Get Node Token:
+lxc exec kmaster &ndash; cat /var/lib/rancher/k3s/server/node-token</p><p>Save the token (e.g., K10&mldr;::server:&mldr;).</p><p>Prepare and Join Worker Nodes:</p><p>For kworker1:
+lxc exec kworker1 &ndash; bash -c &ldquo;apt update && apt install -y curl iptables&rdquo;
+lxc exec kworker1 &ndash; bash -c &ldquo;curl -sfL <a href=https://get.k3s.io>https://get.k3s.io</a> | K3S_URL=https://10.177.108.101:6443 K3S_TOKEN= sh -&rdquo;</p><p>For kworker2:
+lxc exec kworker2 &ndash; bash -c &ldquo;apt update && apt install -y curl iptables&rdquo;
+lxc exec kworker2 &ndash; bash -c &ldquo;curl -sfL <a href=https://get.k3s.io>https://get.k3s.io</a> | K3S_URL=https://10.177.108.101:6443 K3S_TOKEN= sh -&rdquo;</p><p>Verify Cluster:
+lxc exec kmaster &ndash; k3s kubectl get nodes</p><p>Expected:
+NAME STATUS ROLES AGE VERSION
+kmaster Ready control-plane,master 5m v1.32.3+k3s1
+kworker1 Ready 2m v1.32.3+k3s1
+kworker2 Ready 1m v1.32.3+k3s1</p><p>Set Up Host Access:</p><p>Install kubectl on the host:
+sudo snap install kubectl &ndash;classic</p><p>Copy kubeconfig:
+lxc file pull kmaster/etc/rancher/k3s/k3s.yaml ~/.kube/config</p><p>Edit ~/.kube/config, replace 127.0.0.1 with 10.177.108.101:
+server: https://10.177.108.101:6443</p><p>Test:
+kubectl get nodes</p><p>Add Port Forwarding for K3s API:
+sudo iptables -t nat -A PREROUTING -p tcp &ndash;dport 6443 -j DNAT &ndash;to-destination 10.177.108.101:6443
+sudo iptables -t nat -A POSTROUTING -j MASQUERADE
+sudo sysctl -w net.ipv4.ip_forward=1</p><ol start=5><li>Set Up NGINX Ingress and Deploy a Test Service</li></ol><p>Install Helm:
+curl -fsSL -o get_helm.sh <a href=https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3>https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3</a>
+sudo bash get_helm.sh</p><p>Install NGINX Ingress:
+helm repo add ingress-nginx <a href=https://kubernetes.github.io/ingress-nginx>https://kubernetes.github.io/ingress-nginx</a>
+helm repo update
+helm install ingress-nginx ingress-nginx/ingress-nginx<br>&ndash;namespace ingress-nginx<br>&ndash;create-namespace<br>&ndash;set controller.service.type=LoadBalancer</p><p>Add Proxy Devices for HTTP/HTTPS:</p><p>Based on your lxc config show kmaster &ndash;expanded:
+lxc config device add kmaster http proxy listen=tcp:0.0.0.0:80 connect=tcp:127.0.0.1:80
+lxc config device add kmaster https proxy listen=tcp:0.0.0.0:443 connect=tcp:127.0.0.1:443</p><p>Add Port Forwarding for HTTP/HTTPS:</p><p>Get NGINX service IP:
+kubectl get svc -n ingress-nginx</p><p>Example: 10.177.108.x.</p><p>Forward ports:
+sudo iptables -t nat -A PREROUTING -p tcp &ndash;dport 80 -j DNAT &ndash;to-destination 10.177.108.x:80
+sudo iptables -t nat -A PREROUTING -p tcp &ndash;dport 443 -j DNAT &ndash;to-destination 10.177.108.x:443
+sudo iptables -t nat -A POSTROUTING -j MASQUERADE</p><p>Deploy a Basic NGINX Test Service:</p><h2 id=--containerport-80>Create nginx-test.yaml:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: nginx-test
+namespace: default
+spec:
+replicas: 1
+selector:
+matchLabels:
+app: nginx-test
+template:
+metadata:
+labels:
+app: nginx-test
+spec:
+containers:
+- name: nginx
+image: nginx:latest
+ports:
+- containerPort: 80</h2><p>apiVersion: v1
+kind: Service
+metadata:
+name: nginx-test
+namespace: default
+spec:
+ports:</p><ul><li>port: 80
+targetPort: 80
+protocol: TCP
+selector:
+app: nginx-test</li></ul><hr><p>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+name: nginx-test
+namespace: default
+annotations:
+nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+ingressClassName: nginx
+rules:</p><ul><li>host: nginx-test.local
+http:
+paths:<ul><li>path: /
+pathType: Prefix
+backend:
+service:
+name: nginx-test
+port:
+number: 80</li></ul></li></ul><p>Apply:
+kubectl apply -f nginx-test.yaml</p><p>Test the NGINX Service:</p><p>Update /etc/hosts on your local machine (temporary workaround since nginx-test.local isn’t a real domain):
+echo &ldquo; nginx-test.local&rdquo; | sudo tee -a /etc/hosts</p><p>Use your Oracle Cloud instance’s public IP (e.g., curl ifconfig.me).</p><p>Test:
+curl <a href=http://nginx-test.local>http://nginx-test.local</a></p><p>Should return the NGINX welcome page HTML.</p><p>Conclusion
+You now have a K3s cluster running inside LXC containers managed by LXD, with NGINX Ingress and a basic NGINX test service accessible at <a href=http://nginx-test.local>http://nginx-test.local</a>. This setup leverages your Oracle Cloud Free Tier instance efficiently, with Traefik disabled and NGINX handling ingress traffic.</p></div><footer class=post-footer><ul class=post-tags></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=https://blog.rawlani.com/>The world wide web, AI, me and my learnings!</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
