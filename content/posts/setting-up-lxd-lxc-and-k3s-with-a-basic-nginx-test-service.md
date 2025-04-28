@@ -4,8 +4,6 @@ draft: false
 title: 'Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service'
 ---
 
-# Setting Up LXD, LXC, and K3s with a Basic NGINX Test Service
-
 This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named `maata-paarvati` with 4 CPUs and 24 GB RAM.
 
 ## Prerequisites

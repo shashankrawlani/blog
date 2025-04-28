@@ -2,3 +2,36 @@ baseURL: "https://blog.rawlani.com/"
 languageCode: en-us
 title: The world wide web, AI, me and my learnings!
 theme: PaperMod
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+params:
+  author:
+    name: "Shashank Rawlani"
+    email: "shashank@rawlani.com" 
+    image: "img/shashankrawlani.png"
+  socialIcons:
+    - name: twitter
+      url: "https://twitter.com/yourusername"
+    - name: github
+      url: "https://github.com/yourusername"
+    - name: linkedin
+      url: "https://linkedin.com/in/yourusername"
+    - name: instagram
+      url: "https://instagram.com/yourusername"
+  assets:
+    copy_button:
+      enable: true
+      # Optional customization:
+      style: flat # options: flat (default), none
+      show_result: true # shows 'Copied!' text when clicked
+  breadcrumb: true
+  breadcrumbSeparator: ">" # Optional, default is "/"
+  ShowRelatedPosts: true
+  RelatedPosts:
+    includeNewer: false # whether to include newer posts
+    threshold: 80 # similarity threshold (0-100)
+    toLower: false # convert to lower case for comparison
+    maxCount: 5 # maximum number of posts to show
