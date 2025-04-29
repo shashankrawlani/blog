@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on The world wide web, AI, me and my learnings!</title><link>https://blog.rawlani.com/posts/</link><description>Recent content in Posts on The world wide web, AI, me and my learnings!</description><generator>Hugo -- 0.145.0</generator><language>en-us</language><lastBuildDate>Mon, 21 Apr 2025 17:35:27 +0530</lastBuildDate><atom:link href="https://blog.rawlani.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service</title><link>https://blog.rawlani.com/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/</link><pubDate>Mon, 21 Apr 2025 17:35:27 +0530</pubDate><guid>https://blog.rawlani.com/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/</guid><description>&lt;h1 id="setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service">Setting Up LXD, LXC, and K3s with a Basic NGINX Test Service&lt;/h1>
-&lt;p>This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named &lt;code>maata-paarvati&lt;/code> with 4 CPUs and 24 GB RAM.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on The world wide web, AI, me and my learnings!</title><link>https://blog.rawlani.com/posts/</link><description>Recent content in Posts on The world wide web, AI, me and my learnings!</description><generator>Hugo -- 0.145.0</generator><language>en-us</language><lastBuildDate>Mon, 21 Apr 2025 17:35:27 +0530</lastBuildDate><atom:link href="https://blog.rawlani.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service</title><link>https://blog.rawlani.com/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/</link><pubDate>Mon, 21 Apr 2025 17:35:27 +0530</pubDate><guid>https://blog.rawlani.com/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/</guid><description>&lt;p>This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named &lt;code>maata-paarvati&lt;/code> with 4 CPUs and 24 GB RAM.&lt;/p>
 &lt;h2 id="prerequisites">Prerequisites&lt;/h2>
 &lt;ul>
 &lt;li>An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance).&lt;/li>
@@ -10,9 +9,426 @@
 &lt;h2 id="1-install-lxd">1. Install LXD&lt;/h2>
 &lt;ol>
 &lt;li>
-&lt;p>&lt;strong>Install LXD via Snap&lt;/strong>:&lt;/p></description></item><item><title>LXC vs. LXD: Understanding the Differences and Choosing the Right Tool</title><link>https://blog.rawlani.com/posts/lxc-vs-lxd/</link><pubDate>Thu, 10 Apr 2025 12:49:17 +0530</pubDate><guid>https://blog.rawlani.com/posts/lxc-vs-lxd/</guid><description>&lt;h1 id="lxc-vs-lxd-understanding-the-differences-and-choosing-the-right-tool">LXC vs. LXD: Understanding the Differences and Choosing the Right Tool&lt;/h1>
+&lt;p>&lt;strong>Install LXD via Snap&lt;/strong>:&lt;/p></description><content:encoded><![CDATA[<p>This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named <code>maata-paarvati</code> with 4 CPUs and 24 GB RAM.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance).</li>
+<li>Root or sudo access.</li>
+<li>Network configured to allow TCP ports 80, 443, and 6443.</li>
+</ul>
+<hr>
+<h2 id="1-install-lxd">1. Install LXD</h2>
+<ol>
+<li>
+<p><strong>Install LXD via Snap</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo snap install lxd
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Initialize LXD</strong>:</p>
+<ul>
+<li>
+<p>Use default settings for a simple setup:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo lxd init --auto
+</span></span></code></pre></div></li>
+<li>
+<p>This creates a <code>dir</code> storage pool (<code>default</code>) and a bridge network (<code>lxdbr0</code>).</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Add User to LXD Group</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo usermod -aG lxd ubuntu
+</span></span><span style="display:flex;"><span>newgrp lxd
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify LXD</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc list
+</span></span></code></pre></div><ul>
+<li>Should display an empty table initially.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="2-create-a-kubernetes-profile-for-lxc-containers">2. Create a Kubernetes Profile for LXC Containers</h2>
+<ol>
+<li>
+<p><strong>Create the Profile Configuration</strong>:</p>
+<ul>
+<li>
+<p>Save this as <code>k8s-profile.yaml</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">config</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">limits.cpu</span>: <span style="color:#e6db74">&#34;2&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">limits.memory</span>: <span style="color:#ae81ff">2GB</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">limits.memory.swap</span>: <span style="color:#e6db74">&#34;false&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">linux.kernel_modules</span>: <span style="color:#ae81ff">ip_tables,ip6_tables,nf_nat,overlay,br_netfilter</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">raw.lxc</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    lxc.apparmor.profile=unconfined
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    lxc.cap.drop=
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    lxc.cgroup.devices.allow=a
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    lxc.mount.auto=proc:rw sys:rw</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">security.privileged</span>: <span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">security.nesting</span>: <span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">security.syscalls.intercept.mknod</span>: <span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">security.syscalls.intercept.setxattr</span>: <span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">description</span>: <span style="color:#ae81ff">LXD profile for Kubernetes</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">devices</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">eth0</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">eth0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">nictype</span>: <span style="color:#ae81ff">bridged</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">parent</span>: <span style="color:#ae81ff">lxdbr0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">type</span>: <span style="color:#ae81ff">nic</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">kmsg</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/dev/kmsg</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">source</span>: <span style="color:#ae81ff">/dev/console</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">type</span>: <span style="color:#ae81ff">unix-char</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">root</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">pool</span>: <span style="color:#ae81ff">default</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">type</span>: <span style="color:#ae81ff">disk</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">k8s</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">used_by</span>: []
+</span></span></code></pre></div></li>
+<li>
+<p>This matches your <code>lxc config show kmaster --expanded</code> output, excluding volatile and proxy settings added later.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Apply the Profile</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc profile create k8s
+</span></span><span style="display:flex;"><span>lxc profile edit k8s &lt; k8s-profile.yaml
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify Profile</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc profile show k8s
+</span></span></code></pre></div></li>
+</ol>
+<hr>
+<h2 id="3-launch-lxc-containers-with-ubuntu-2404">3. Launch LXC Containers with Ubuntu 24.04</h2>
+<ol>
+<li>
+<p><strong>Initialize Containers</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc init ubuntu:24.04 kmaster --profile k8s
+</span></span><span style="display:flex;"><span>lxc init ubuntu:24.04 kworker1 --profile k8s
+</span></span><span style="display:flex;"><span>lxc init ubuntu:24.04 kworker2 --profile k8s
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Start Containers</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc start kmaster
+</span></span><span style="display:flex;"><span>lxc start kworker1
+</span></span><span style="display:flex;"><span>lxc start kworker2
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify Containers</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc list
+</span></span></code></pre></div><ul>
+<li>
+<p>Example output (IPs will vary):</p>
+<pre tabindex="0"><code>+---------+---------+----------------------+------+-----------+-----------+
+|  NAME   |  STATE  |         IPV4         | IPV6 |   TYPE    | SNAPSHOTS |
++---------+---------+----------------------+------+-----------+-----------+
+| kmaster | RUNNING | 10.177.108.101 (eth0)|      | CONTAINER | 0         |
+| kworker1| RUNNING | 10.177.108.79 (eth0) |      | CONTAINER | 0         |
+| kworker2| RUNNING | 10.177.108.57 (eth0) |      | CONTAINER | 0         |
++---------+---------+----------------------+------+-----------+-----------+
+</code></pre></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="4-install-k3s-and-join-the-cluster">4. Install K3s and Join the Cluster</h2>
+<ol>
+<li>
+<p><strong>Prepare</strong> <code>kmaster</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc exec kmaster -- bash -c <span style="color:#e6db74">&#34;apt update &amp;&amp; apt install -y curl iptables&#34;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Install K3s on</strong> <code>kmaster</code>:</p>
+<ul>
+<li>
+<p>Disable Traefik to use NGINX Ingress later:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc exec kmaster -- bash -c <span style="color:#e6db74">&#34;curl -sfL https://get.k3s.io | sh -s - server --disable=traefik --write-kubeconfig-mode 644&#34;</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><strong>Get Node Token</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc exec kmaster -- cat /var/lib/rancher/k3s/server/node-token
+</span></span></code></pre></div><ul>
+<li>Save the token (e.g., <code>K10...::server:...</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong>Prepare and Join Worker Nodes</strong>:</p>
+<ul>
+<li>
+<p>For <code>kworker1</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc exec kworker1 -- bash -c <span style="color:#e6db74">&#34;apt update &amp;&amp; apt install -y curl iptables&#34;</span>
+</span></span><span style="display:flex;"><span>lxc exec kworker1 -- bash -c <span style="color:#e6db74">&#34;curl -sfL https://get.k3s.io | K3S_URL=https://10.177.108.101:6443 K3S_TOKEN=&lt;node-token&gt; sh -&#34;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>For <code>kworker2</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc exec kworker2 -- bash -c <span style="color:#e6db74">&#34;apt update &amp;&amp; apt install -y curl iptables&#34;</span>
+</span></span><span style="display:flex;"><span>lxc exec kworker2 -- bash -c <span style="color:#e6db74">&#34;curl -sfL https://get.k3s.io | K3S_URL=https://10.177.108.101:6443 K3S_TOKEN=&lt;node-token&gt; sh -&#34;</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><strong>Verify Cluster</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc exec kmaster -- k3s kubectl get nodes
+</span></span></code></pre></div><ul>
+<li>
+<p>Expected:</p>
+<pre tabindex="0"><code>NAME       STATUS   ROLES                  AGE   VERSION
+kmaster    Ready    control-plane,master   5m    v1.32.3+k3s1
+kworker1   Ready    &lt;none&gt;                 2m    v1.32.3+k3s1
+kworker2   Ready    &lt;none&gt;                 1m    v1.32.3+k3s1
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p><strong>Set Up Host Access</strong>:</p>
+<ul>
+<li>
+<p>Install <code>kubectl</code> on the host:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo snap install kubectl --classic
+</span></span></code></pre></div></li>
+<li>
+<p>Copy kubeconfig:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc file pull kmaster/etc/rancher/k3s/k3s.yaml ~/.kube/config
+</span></span></code></pre></div></li>
+<li>
+<p>Edit <code>~/.kube/config</code>, replace <code>127.0.0.1</code> with <code>10.177.108.101</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">server</span>: <span style="color:#ae81ff">https://10.177.108.101:6443</span>
+</span></span></code></pre></div></li>
+<li>
+<p>Test:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl get nodes
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><strong>Add Port Forwarding for K3s API</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo iptables -t nat -A PREROUTING -p tcp --dport <span style="color:#ae81ff">6443</span> -j DNAT --to-destination 10.177.108.101:6443
+</span></span><span style="display:flex;"><span>sudo iptables -t nat -A POSTROUTING -j MASQUERADE
+</span></span><span style="display:flex;"><span>sudo sysctl -w net.ipv4.ip_forward<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div></li>
+</ol>
+<hr>
+<h2 id="5-set-up-nginx-ingress-and-deploy-a-test-service">5. Set Up NGINX Ingress and Deploy a Test Service</h2>
+<ol>
+<li>
+<p><strong>Install Helm</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+</span></span><span style="display:flex;"><span>sudo bash get_helm.sh
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Install NGINX Ingress</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+</span></span><span style="display:flex;"><span>helm repo update
+</span></span><span style="display:flex;"><span>helm install ingress-nginx ingress-nginx/ingress-nginx <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --namespace ingress-nginx <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --create-namespace <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --set controller.service.type<span style="color:#f92672">=</span>LoadBalancer
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Add Proxy Devices for HTTP/HTTPS</strong>:</p>
+<ul>
+<li>
+<p>Based on your <code>lxc config show kmaster --expanded</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>lxc config device add kmaster http proxy listen<span style="color:#f92672">=</span>tcp:0.0.0.0:80 connect<span style="color:#f92672">=</span>tcp:127.0.0.1:80
+</span></span><span style="display:flex;"><span>lxc config device add kmaster https proxy listen<span style="color:#f92672">=</span>tcp:0.0.0.0:443 connect<span style="color:#f92672">=</span>tcp:127.0.0.1:443
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><strong>Add Port Forwarding for HTTP/HTTPS</strong>:</p>
+<ul>
+<li>
+<p>Get NGINX service IP:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl get svc -n ingress-nginx
+</span></span></code></pre></div><ul>
+<li>Example: <code>10.177.108.x</code>.</li>
+</ul>
+</li>
+<li>
+<p>Forward ports:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo iptables -t nat -A PREROUTING -p tcp --dport <span style="color:#ae81ff">80</span> -j DNAT --to-destination 10.177.108.x:80
+</span></span><span style="display:flex;"><span>sudo iptables -t nat -A PREROUTING -p tcp --dport <span style="color:#ae81ff">443</span> -j DNAT --to-destination 10.177.108.x:443
+</span></span><span style="display:flex;"><span>sudo iptables -t nat -A POSTROUTING -j MASQUERADE
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><strong>Deploy a Basic NGINX Test Service</strong>:</p>
+<ul>
+<li>
+<p>Create <code>nginx-test.yaml</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-test</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">default</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">matchLabels</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-test</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">template</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nginx:latest</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">containerPort</span>: <span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-test</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">default</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">port</span>: <span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">targetPort</span>: <span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">protocol</span>: <span style="color:#ae81ff">TCP</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">app</span>: <span style="color:#ae81ff">nginx-test</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">networking.k8s.io/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Ingress</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-test</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">default</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">annotations</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">nginx.ingress.kubernetes.io/rewrite-target</span>: <span style="color:#ae81ff">/</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">ingressClassName</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">rules</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">host</span>: <span style="color:#ae81ff">nginx-test.local</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">http</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">paths</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">pathType</span>: <span style="color:#ae81ff">Prefix</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">backend</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">service</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-test</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">port</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">number</span>: <span style="color:#ae81ff">80</span>
+</span></span></code></pre></div></li>
+<li>
+<p>Apply:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl apply -f nginx-test.yaml
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><strong>Test the NGINX Service</strong>:</p>
+<ul>
+<li>
+<p>Update <code>/etc/hosts</code> on your local machine (temporary workaround since <code>nginx-test.local</code> isn’t a real domain):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;&lt;public-ip&gt; nginx-test.local&#34;</span> | sudo tee -a /etc/hosts
+</span></span></code></pre></div><ul>
+<li>Use your Oracle Cloud instance’s public IP (e.g., <code>curl ifconfig.me</code>).</li>
+</ul>
+</li>
+<li>
+<p>Test:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl http://nginx-test.local
+</span></span></code></pre></div><ul>
+<li>Should return the NGINX welcome page HTML.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="conclusion">Conclusion</h2>
+<p>You now have a K3s cluster running inside LXC containers managed by LXD, with NGINX Ingress and a basic NGINX test service accessible at <code>http://nginx-test.local</code>. This setup leverages your Oracle Cloud Free Tier instance efficiently, with Traefik disabled and NGINX handling ingress traffic.</p>
+]]></content:encoded></item><item><title>LXC vs. LXD: Understanding the Differences and Choosing the Right Tool</title><link>https://blog.rawlani.com/posts/lxc-vs-lxd/</link><pubDate>Thu, 10 Apr 2025 12:49:17 +0530</pubDate><guid>https://blog.rawlani.com/posts/lxc-vs-lxd/</guid><description>&lt;h1 id="lxc-vs-lxd-understanding-the-differences-and-choosing-the-right-tool">LXC vs. LXD: Understanding the Differences and Choosing the Right Tool&lt;/h1>
 &lt;h2 id="introduction">Introduction&lt;/h2>
-&lt;p>Linux containers have revolutionized how we deploy and manage applications, offering a lightweight alternative to virtual machines. But with tools like &lt;em>LXC (Linux Containers)&lt;/em> and &lt;em>LXD (Linux Container Daemon)&lt;/em>, choosing the right one can be confusing. &lt;em>Did you know that while both are based on Linux kernel features, LXD builds on LXC for a more user-friendly experience?&lt;/em> In this post, we&amp;rsquo;ll explore what LXC and LXD are, how they differ, and when to use each. By the end, you&amp;rsquo;ll have a clear understanding to make an informed decision for your projects.&lt;/p></description></item><item><title>Yourls K8s Installation Guide</title><link>https://blog.rawlani.com/posts/yourls-k8s-installation-guide/</link><pubDate>Sat, 05 Apr 2025 04:27:19 +0530</pubDate><guid>https://blog.rawlani.com/posts/yourls-k8s-installation-guide/</guid><description>&lt;h1 id="installing-yourls-on-kubernetes">Installing YOURLS on Kubernetes&lt;/h1>
+&lt;p>Linux containers have revolutionized how we deploy and manage applications, offering a lightweight alternative to virtual machines. But with tools like &lt;em>LXC (Linux Containers)&lt;/em> and &lt;em>LXD (Linux Container Daemon)&lt;/em>, choosing the right one can be confusing. &lt;em>Did you know that while both are based on Linux kernel features, LXD builds on LXC for a more user-friendly experience?&lt;/em> In this post, we&amp;rsquo;ll explore what LXC and LXD are, how they differ, and when to use each. By the end, you&amp;rsquo;ll have a clear understanding to make an informed decision for your projects.&lt;/p></description><content:encoded><![CDATA[<h1 id="lxc-vs-lxd-understanding-the-differences-and-choosing-the-right-tool">LXC vs. LXD: Understanding the Differences and Choosing the Right Tool</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Linux containers have revolutionized how we deploy and manage applications, offering a lightweight alternative to virtual machines. But with tools like <em>LXC (Linux Containers)</em> and <em>LXD (Linux Container Daemon)</em>, choosing the right one can be confusing. <em>Did you know that while both are based on Linux kernel features, LXD builds on LXC for a more user-friendly experience?</em> In this post, we&rsquo;ll explore what LXC and LXD are, how they differ, and when to use each. By the end, you&rsquo;ll have a clear understanding to make an informed decision for your projects.</p>
+<p><em>Insert an image here showing how containers share the host kernel while providing isolated environments.</em></p>
+<hr>
+<h2 id="what-are-linux-containers">What are Linux Containers?</h2>
+<p>Linux containers are a form of OS-level virtualization, allowing multiple isolated applications to run on a single host. They share the host&rsquo;s kernel but have their own file systems and processes, making them more efficient than VMs. LXC and LXD leverage kernel features like namespaces and cgroups for isolation and resource control.</p>
+<hr>
+<h2 id="understanding-lxc">Understanding LXC</h2>
+<p><em>LXC</em> is a low-level interface for Linux kernel containment, providing tools to create and manage containers directly. It uses commands like <code>lxc-create</code> and <code>lxc-start</code> for operations.</p>
+<h3 id="example">Example:</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo lxc-create -n mycontainer -t ubuntu
+</span></span><span style="display:flex;"><span>sudo lxc-start -n mycontainer
+</span></span></code></pre></div><p><em>LXC</em> is lightweight and performant but requires deeper Linux knowledge.</p>
+<hr>
+<h2 id="understanding-lxd">Understanding LXD</h2>
+<p><em>LXD</em> builds on <em>LXC</em>, adding a daemon for easier management via a REST API. It supports advanced features like snapshots and live migration, with commands like <code>lxc launch</code>.</p>
+<h3 id="example-1">Example:</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo lxd init
+</span></span><span style="display:flex;"><span>sudo lxc launch ubuntu:22.04 mycontainer
+</span></span></code></pre></div><p><em>LXD</em> is user-friendly, ideal for beginners and large-scale setups.</p>
+<hr>
+<h2 id="comparing-lxc-and-lxd">Comparing LXC and LXD</h2>
+<p>Here&rsquo;s a comparison to help you decide:</p>
+<table>
+  <thead>
+      <tr>
+          <th><strong>Aspect</strong></th>
+          <th><strong>LXC</strong></th>
+          <th><strong>LXD</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Ease of Use</strong></td>
+          <td>Complex, for experienced users</td>
+          <td>User-friendly, beginner-friendly</td>
+      </tr>
+      <tr>
+          <td><strong>Features</strong></td>
+          <td>Basic, no snapshots</td>
+          <td>Advanced, includes snapshots, migration</td>
+      </tr>
+      <tr>
+          <td><strong>Performance</strong></td>
+          <td>Higher, minimal overhead</td>
+          <td>Slight overhead, still efficient</td>
+      </tr>
+      <tr>
+          <td><strong>Scalability</strong></td>
+          <td>Limited, manual management</td>
+          <td>Designed for large-scale, clustering</td>
+      </tr>
+  </tbody>
+</table>
+<p><em>Insert an image here comparing LXC and LXD architectures.</em></p>
+<hr>
+<h2 id="when-to-use-lxc">When to Use LXC</h2>
+<p>Use <em>LXC</em> for:</p>
+<ul>
+<li>Resource-constrained environments.</li>
+<li>Users needing fine-grained control.</li>
+<li>Simple setups with basic needs.</li>
+</ul>
+<hr>
+<h2 id="when-to-use-lxd">When to Use LXD</h2>
+<p>Use <em>LXD</em> for:</p>
+<ul>
+<li>Ease of management and advanced features.</li>
+<li>Large-scale deployments or cloud setups.</li>
+<li>Beginners or teams needing scalability.</li>
+</ul>
+<hr>
+<h2 id="community-and-ecosystem">Community and Ecosystem</h2>
+<p><em>LXC</em> has a smaller community, documented at <a href="https://linuxcontainers.org/lxc/introduction/">Linux Containers</a>. <em>LXD</em>, under Canonical, has extensive resources at <a href="https://documentation.ubuntu.com/lxd/en/latest/explanation/lxd_lxc/">Ubuntu LXD Docs</a>.</p>
+<hr>
+<h2 id="conclusion">Conclusion</h2>
+<p>In summary, <em>LXC</em> is lightweight but complex, while <em>LXD</em> is user-friendly with advanced features. Now you&rsquo;re equipped to choose based on your needs. Share your experiences with LXC or LXD in the comments below!</p>
+]]></content:encoded></item><item><title>Yourls K8s Installation Guide</title><link>https://blog.rawlani.com/posts/yourls-k8s-installation-guide/</link><pubDate>Sat, 05 Apr 2025 04:27:19 +0530</pubDate><guid>https://blog.rawlani.com/posts/yourls-k8s-installation-guide/</guid><description>&lt;h1 id="installing-yourls-on-kubernetes">Installing YOURLS on Kubernetes&lt;/h1>
 &lt;p>This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.&lt;/p>
 &lt;h2 id="prerequisites">Prerequisites&lt;/h2>
 &lt;ul>
@@ -26,4 +442,147 @@
 &lt;p>First, create a dedicated namespace for YOURLS:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>kubectl create namespace yourls
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="2-configure-values-for-yourls">2. Configure Values for YOURLS&lt;/h3>
-&lt;p>Create a &lt;code>values.yaml&lt;/code> file with the following configuration:&lt;/p></description></item></channel></rss>
+&lt;p>Create a &lt;code>values.yaml&lt;/code> file with the following configuration:&lt;/p></description><content:encoded><![CDATA[<h1 id="installing-yourls-on-kubernetes">Installing YOURLS on Kubernetes</h1>
+<p>This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>A working Kubernetes cluster</li>
+<li>Helm installed on your machine</li>
+<li>Basic knowledge of Kubernetes concepts</li>
+<li>A domain name pointed to your cluster&rsquo;s ingress controller (we&rsquo;ll use <code>go.example.com</code> in this guide)</li>
+</ul>
+<h2 id="installation-steps">Installation Steps</h2>
+<h3 id="1-create-a-namespace-for-yourls">1. Create a Namespace for YOURLS</h3>
+<p>First, create a dedicated namespace for YOURLS:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl create namespace yourls
+</span></span></code></pre></div><h3 id="2-configure-values-for-yourls">2. Configure Values for YOURLS</h3>
+<p>Create a <code>values.yaml</code> file with the following configuration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">yourls</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">username</span>: <span style="color:#e6db74">&#34;admin&#34;</span>           <span style="color:#75715e"># Change to your desired admin username</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">password</span>: <span style="color:#e6db74">&#34;securepassword&#34;</span>  <span style="color:#75715e"># Change to a secure password</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">cookieKey</span>: <span style="color:#e6db74">&#34;randomsecurestring&#34;</span>  <span style="color:#75715e"># Use a random string for cookie encryption</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># The following two settings are critical for proper site URL configuration</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">scheme</span>: <span style="color:#e6db74">&#34;https&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">domain</span>: <span style="color:#e6db74">&#34;go.example.com&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">mariadb</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>               <span style="color:#75715e"># Use built-in MariaDB</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">auth</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">username</span>: <span style="color:#e6db74">&#34;yourlsdb&#34;</span>      <span style="color:#75715e"># Database username</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">password</span>: <span style="color:#e6db74">&#34;dbpassword&#34;</span>    <span style="color:#75715e"># Database password</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">database</span>: <span style="color:#e6db74">&#34;yourls&#34;</span>        <span style="color:#75715e"># Database name</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">rootPassword</span>: <span style="color:#e6db74">&#34;rootpass&#34;</span>  <span style="color:#75715e"># Root password for MariaDB</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">persistence</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>               <span style="color:#75715e"># Enable persistent storage</span>
+</span></span></code></pre></div><h3 id="3-install-yourls-using-helm">3. Install YOURLS using Helm</h3>
+<p>Deploy YOURLS using the Helm chart with your custom values:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm upgrade -f values.yaml --install yourls yourls/yourls --namespace yourls
+</span></span></code></pre></div><h3 id="4-set-up-tls-with-cert-manager">4. Set Up TLS with cert-manager</h3>
+<p>Install cert-manager to handle TLS certificates:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl create namespace cert-manager
+</span></span><span style="display:flex;"><span>helm install cert-manager bitnami/cert-manager --namespace cert-manager --set installCRDs<span style="color:#f92672">=</span>true
+</span></span></code></pre></div><p>Create a ClusterIssuer for Let&rsquo;s Encrypt:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># letsencrypt-prod.yaml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">cert-manager.io/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ClusterIssuer</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">letsencrypt-prod</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">acme</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">server</span>: <span style="color:#ae81ff">https://acme-v02.api.letsencrypt.org/directory</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">email</span>: <span style="color:#ae81ff">admin@example.com </span> <span style="color:#75715e"># Change to your email</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">privateKeySecretRef</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">name</span>: <span style="color:#ae81ff">letsencrypt-prod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">solvers</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">http01</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ingress</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">class</span>: <span style="color:#ae81ff">nginx</span>
+</span></span></code></pre></div><p>Apply the ClusterIssuer:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl apply -f letsencrypt-prod.yaml
+</span></span></code></pre></div><h3 id="5-configure-ingress-for-yourls">5. Configure Ingress for YOURLS</h3>
+<p>Create an ingress configuration for YOURLS:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># yourls-ingress.yaml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">networking.k8s.io/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Ingress</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">yourls</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">yourls</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">annotations</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cert-manager.io/cluster-issuer</span>: <span style="color:#e6db74">&#34;letsencrypt-prod&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">ingressClassName</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">tls</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">hosts</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#ae81ff">go.example.com</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">secretName</span>: <span style="color:#ae81ff">go-example-com-tls</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">rules</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">host</span>: <span style="color:#ae81ff">go.example.com</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">http</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">paths</span>:
+</span></span><span style="display:flex;"><span>          - <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">pathType</span>: <span style="color:#ae81ff">Prefix</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">backend</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">service</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">name</span>: <span style="color:#ae81ff">yourls</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">port</span>:
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">number</span>: <span style="color:#ae81ff">80</span>
+</span></span></code></pre></div><p>Apply the ingress configuration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl apply -f yourls-ingress.yaml
+</span></span></code></pre></div><h2 id="testing-your-installation">Testing Your Installation</h2>
+<h3 id="1-verify-pod-status">1. Verify Pod Status</h3>
+<p>Check that the YOURLS and MariaDB pods are running:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl get pods -n yourls
+</span></span></code></pre></div><p>Expected output:</p>
+<pre tabindex="0"><code>NAME                      READY   STATUS    RESTARTS   AGE
+yourls-xxxxxxxxxx-xxxxx   1/1     Running   0          3m
+yourls-mariadb-0          1/1     Running   0          3m
+</code></pre><h3 id="2-check-environment-variables">2. Check Environment Variables</h3>
+<p>Verify that the YOURLS_SITE environment variable is set correctly:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl exec -it -n yourls deploy/yourls -- env | grep YOURLS_SITE
+</span></span></code></pre></div><p>Expected output:</p>
+<pre tabindex="0"><code>YOURLS_SITE=https://go.example.com
+</code></pre><h3 id="3-test-tls-certificate">3. Test TLS Certificate</h3>
+<p>Verify that the SSL certificate is properly issued:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl get certificate -n yourls
+</span></span></code></pre></div><p>Test the HTTPS connection:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -Iv https://go.example.com
+</span></span></code></pre></div><p>You should see a successful HTTPS response with a valid certificate.</p>
+<h3 id="4-access-yourls-admin-interface">4. Access YOURLS Admin Interface</h3>
+<p>Open your browser and navigate to <code>https://go.example.com/admin</code> to access the YOURLS admin interface.</p>
+<p>Login using the credentials you specified in the values.yaml file.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="yourls_site-not-set-correctly">YOURLS_SITE Not Set Correctly</h3>
+<p>If the YOURLS_SITE environment variable is not being set correctly, make sure you&rsquo;ve configured both <code>scheme</code> and <code>domain</code> in your values.yaml:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">yourls</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">scheme</span>: <span style="color:#e6db74">&#34;https&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">domain</span>: <span style="color:#e6db74">&#34;go.example.com&#34;</span>
+</span></span></code></pre></div><h3 id="ingress-not-working">Ingress Not Working</h3>
+<p>Check the status of your ingress:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl describe ingress yourls -n yourls
+</span></span></code></pre></div><p>Ensure your DNS records are correctly pointing to your Kubernetes cluster&rsquo;s ingress controller.</p>
+<h3 id="certificate-issues">Certificate Issues</h3>
+<p>Check certificate status:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl describe certificate go-example-com-tls -n yourls
+</span></span></code></pre></div><p>Look for any errors in the cert-manager logs:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl logs -n cert-manager -l app<span style="color:#f92672">=</span>cert-manager
+</span></span></code></pre></div><h2 id="uninstallation">Uninstallation</h2>
+<p>To completely remove YOURLS from your cluster:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Uninstall the YOURLS Helm release</span>
+</span></span><span style="display:flex;"><span>helm uninstall yourls -n yourls
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Delete any persistent volume claims</span>
+</span></span><span style="display:flex;"><span>kubectl delete pvc --all -n yourls
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Delete the namespace</span>
+</span></span><span style="display:flex;"><span>kubectl delete namespace yourls
+</span></span></code></pre></div><p>Optional: Remove cert-manager if it&rsquo;s no longer needed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm uninstall cert-manager -n cert-manager
+</span></span><span style="display:flex;"><span>kubectl delete namespace cert-manager
+</span></span></code></pre></div><h2 id="notes">Notes</h2>
+<ul>
+<li>Remember to back up your MariaDB data before making major changes to your deployment</li>
+<li>For production use, consider using external database services instead of the bundled MariaDB</li>
+<li>Keep your Kubernetes cluster and YOURLS installation updated to maintain security</li>
+</ul>
+]]></content:encoded></item></channel></rss>
