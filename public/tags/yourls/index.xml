@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Yourls on The world wide web, AI, me and my learnings!</title>
+    <link>http://localhost:1313/tags/yourls/</link>
+    <description>Recent content in Yourls on The world wide web, AI, me and my learnings!</description>
+    <generator>Hugo -- 0.145.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 05 Apr 2025 04:27:19 +0530</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/yourls/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Yourls K8s Installation Guide</title>
+      <link>http://localhost:1313/posts/yourls-k8s-installation-guide/</link>
+      <pubDate>Sat, 05 Apr 2025 04:27:19 +0530</pubDate>
+      <guid>http://localhost:1313/posts/yourls-k8s-installation-guide/</guid>
+      <description>&lt;h1 id=&#34;installing-yourls-on-kubernetes&#34;&gt;Installing YOURLS on Kubernetes&lt;/h1&gt;
+&lt;p&gt;This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.&lt;/p&gt;
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;A working Kubernetes cluster&lt;/li&gt;
+&lt;li&gt;Helm installed on your machine&lt;/li&gt;
+&lt;li&gt;Basic knowledge of Kubernetes concepts&lt;/li&gt;
+&lt;li&gt;A domain name pointed to your cluster&amp;rsquo;s ingress controller (we&amp;rsquo;ll use &lt;code&gt;go.example.com&lt;/code&gt; in this guide)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;installation-steps&#34;&gt;Installation Steps&lt;/h2&gt;
+&lt;h3 id=&#34;1-create-a-namespace-for-yourls&#34;&gt;1. Create a Namespace for YOURLS&lt;/h3&gt;
+&lt;p&gt;First, create a dedicated namespace for YOURLS:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl create namespace yourls
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;2-configure-values-for-yourls&#34;&gt;2. Configure Values for YOURLS&lt;/h3&gt;
+&lt;p&gt;Create a &lt;code&gt;values.yaml&lt;/code&gt; file with the following configuration:&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h1 id="installing-yourls-on-kubernetes">Installing YOURLS on Kubernetes</h1>
+<p>This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>A working Kubernetes cluster</li>
+<li>Helm installed on your machine</li>
+<li>Basic knowledge of Kubernetes concepts</li>
+<li>A domain name pointed to your cluster&rsquo;s ingress controller (we&rsquo;ll use <code>go.example.com</code> in this guide)</li>
+</ul>
+<h2 id="installation-steps">Installation Steps</h2>
+<h3 id="1-create-a-namespace-for-yourls">1. Create a Namespace for YOURLS</h3>
+<p>First, create a dedicated namespace for YOURLS:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl create namespace yourls
+</span></span></code></pre></div><h3 id="2-configure-values-for-yourls">2. Configure Values for YOURLS</h3>
+<p>Create a <code>values.yaml</code> file with the following configuration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">yourls</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">username</span>: <span style="color:#e6db74">&#34;admin&#34;</span>           <span style="color:#75715e"># Change to your desired admin username</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">password</span>: <span style="color:#e6db74">&#34;securepassword&#34;</span>  <span style="color:#75715e"># Change to a secure password</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">cookieKey</span>: <span style="color:#e6db74">&#34;randomsecurestring&#34;</span>  <span style="color:#75715e"># Use a random string for cookie encryption</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># The following two settings are critical for proper site URL configuration</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">scheme</span>: <span style="color:#e6db74">&#34;https&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">domain</span>: <span style="color:#e6db74">&#34;go.example.com&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">mariadb</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>               <span style="color:#75715e"># Use built-in MariaDB</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">auth</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">username</span>: <span style="color:#e6db74">&#34;yourlsdb&#34;</span>      <span style="color:#75715e"># Database username</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">password</span>: <span style="color:#e6db74">&#34;dbpassword&#34;</span>    <span style="color:#75715e"># Database password</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">database</span>: <span style="color:#e6db74">&#34;yourls&#34;</span>        <span style="color:#75715e"># Database name</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">rootPassword</span>: <span style="color:#e6db74">&#34;rootpass&#34;</span>  <span style="color:#75715e"># Root password for MariaDB</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">persistence</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>               <span style="color:#75715e"># Enable persistent storage</span>
+</span></span></code></pre></div><h3 id="3-install-yourls-using-helm">3. Install YOURLS using Helm</h3>
+<p>Deploy YOURLS using the Helm chart with your custom values:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm upgrade -f values.yaml --install yourls yourls/yourls --namespace yourls
+</span></span></code></pre></div><h3 id="4-set-up-tls-with-cert-manager">4. Set Up TLS with cert-manager</h3>
+<p>Install cert-manager to handle TLS certificates:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl create namespace cert-manager
+</span></span><span style="display:flex;"><span>helm install cert-manager bitnami/cert-manager --namespace cert-manager --set installCRDs<span style="color:#f92672">=</span>true
+</span></span></code></pre></div><p>Create a ClusterIssuer for Let&rsquo;s Encrypt:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># letsencrypt-prod.yaml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">cert-manager.io/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ClusterIssuer</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">letsencrypt-prod</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">acme</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">server</span>: <span style="color:#ae81ff">https://acme-v02.api.letsencrypt.org/directory</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">email</span>: <span style="color:#ae81ff">admin@example.com </span> <span style="color:#75715e"># Change to your email</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">privateKeySecretRef</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">name</span>: <span style="color:#ae81ff">letsencrypt-prod</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">solvers</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">http01</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ingress</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">class</span>: <span style="color:#ae81ff">nginx</span>
+</span></span></code></pre></div><p>Apply the ClusterIssuer:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl apply -f letsencrypt-prod.yaml
+</span></span></code></pre></div><h3 id="5-configure-ingress-for-yourls">5. Configure Ingress for YOURLS</h3>
+<p>Create an ingress configuration for YOURLS:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># yourls-ingress.yaml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">networking.k8s.io/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Ingress</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">yourls</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">yourls</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">annotations</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cert-manager.io/cluster-issuer</span>: <span style="color:#e6db74">&#34;letsencrypt-prod&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">ingressClassName</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">tls</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">hosts</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#ae81ff">go.example.com</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">secretName</span>: <span style="color:#ae81ff">go-example-com-tls</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">rules</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">host</span>: <span style="color:#ae81ff">go.example.com</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">http</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">paths</span>:
+</span></span><span style="display:flex;"><span>          - <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">pathType</span>: <span style="color:#ae81ff">Prefix</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">backend</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">service</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">name</span>: <span style="color:#ae81ff">yourls</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">port</span>:
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">number</span>: <span style="color:#ae81ff">80</span>
+</span></span></code></pre></div><p>Apply the ingress configuration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl apply -f yourls-ingress.yaml
+</span></span></code></pre></div><h2 id="testing-your-installation">Testing Your Installation</h2>
+<h3 id="1-verify-pod-status">1. Verify Pod Status</h3>
+<p>Check that the YOURLS and MariaDB pods are running:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl get pods -n yourls
+</span></span></code></pre></div><p>Expected output:</p>
+<pre tabindex="0"><code>NAME                      READY   STATUS    RESTARTS   AGE
+yourls-xxxxxxxxxx-xxxxx   1/1     Running   0          3m
+yourls-mariadb-0          1/1     Running   0          3m
+</code></pre><h3 id="2-check-environment-variables">2. Check Environment Variables</h3>
+<p>Verify that the YOURLS_SITE environment variable is set correctly:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl exec -it -n yourls deploy/yourls -- env | grep YOURLS_SITE
+</span></span></code></pre></div><p>Expected output:</p>
+<pre tabindex="0"><code>YOURLS_SITE=https://go.example.com
+</code></pre><h3 id="3-test-tls-certificate">3. Test TLS Certificate</h3>
+<p>Verify that the SSL certificate is properly issued:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl get certificate -n yourls
+</span></span></code></pre></div><p>Test the HTTPS connection:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -Iv https://go.example.com
+</span></span></code></pre></div><p>You should see a successful HTTPS response with a valid certificate.</p>
+<h3 id="4-access-yourls-admin-interface">4. Access YOURLS Admin Interface</h3>
+<p>Open your browser and navigate to <code>https://go.example.com/admin</code> to access the YOURLS admin interface.</p>
+<p>Login using the credentials you specified in the values.yaml file.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="yourls_site-not-set-correctly">YOURLS_SITE Not Set Correctly</h3>
+<p>If the YOURLS_SITE environment variable is not being set correctly, make sure you&rsquo;ve configured both <code>scheme</code> and <code>domain</code> in your values.yaml:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">yourls</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">scheme</span>: <span style="color:#e6db74">&#34;https&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">domain</span>: <span style="color:#e6db74">&#34;go.example.com&#34;</span>
+</span></span></code></pre></div><h3 id="ingress-not-working">Ingress Not Working</h3>
+<p>Check the status of your ingress:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl describe ingress yourls -n yourls
+</span></span></code></pre></div><p>Ensure your DNS records are correctly pointing to your Kubernetes cluster&rsquo;s ingress controller.</p>
+<h3 id="certificate-issues">Certificate Issues</h3>
+<p>Check certificate status:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl describe certificate go-example-com-tls -n yourls
+</span></span></code></pre></div><p>Look for any errors in the cert-manager logs:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl logs -n cert-manager -l app<span style="color:#f92672">=</span>cert-manager
+</span></span></code></pre></div><h2 id="uninstallation">Uninstallation</h2>
+<p>To completely remove YOURLS from your cluster:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Uninstall the YOURLS Helm release</span>
+</span></span><span style="display:flex;"><span>helm uninstall yourls -n yourls
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Delete any persistent volume claims</span>
+</span></span><span style="display:flex;"><span>kubectl delete pvc --all -n yourls
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Delete the namespace</span>
+</span></span><span style="display:flex;"><span>kubectl delete namespace yourls
+</span></span></code></pre></div><p>Optional: Remove cert-manager if it&rsquo;s no longer needed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm uninstall cert-manager -n cert-manager
+</span></span><span style="display:flex;"><span>kubectl delete namespace cert-manager
+</span></span></code></pre></div><h2 id="notes">Notes</h2>
+<ul>
+<li>Remember to back up your MariaDB data before making major changes to your deployment</li>
+<li>For production use, consider using external database services instead of the bundled MariaDB</li>
+<li>Keep your Kubernetes cluster and YOURLS installation updated to maintain security</li>
+</ul>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>
