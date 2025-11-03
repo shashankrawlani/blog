@@ -1,0 +1,10 @@
+{{- $images := slice -}}
+{{- with .Resources.ByType "image" -}}
+    {{- range . -}}
+        {{- $images = $images | append .RelPermalink -}}
+    {{- end -}}
+{{- end -}}
+{{- with .Params.cover.image -}}
+    {{- $images = $images | append . -}}
+{{- end -}}
+{{- return $images -}}

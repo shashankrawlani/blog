@@ -68,6 +68,8 @@ params:
     google:
       SiteVerificationTag: ""  # Add your verification tag if needed
   
+  googleAnalytics: "G-JWC1DXNDB5"  # Using Hugo's built-in Google Analytics support
+  
   # Search Configuration
   fuseOpts:                    # For search functionality
     isCaseSensitive: false
@@ -108,3 +110,7 @@ menu:
       name: Categories
       url: /categories/
       weight: 20
+    - identifier: portfolio
+      name: Portfolio
+      url: https://shashank.rawlani.com/
+      weight: 25
