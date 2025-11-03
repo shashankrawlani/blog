@@ -3,7 +3,7 @@
   Uses the Hugo `googleAnalytics` config (available as `.Site.GoogleAnalytics`).
   If you prefer to store the ID under `site.Params` instead, adjust accordingly.
 */ -}}
-{{- $id := .Site.GoogleAnalytics -}}
+{{- $id := .Site.Params.googleAnalytics -}}
 {{- if $id }}
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ $id }}"></script>

@@ -69,6 +69,7 @@ params:
   analytics:
     google:
       SiteVerificationTag: ""  # Add your verification tag if needed
+  googleAnalytics: "G-JWC1DXNDB5"
   
   # googleAnalytics should be set at the site root (not under params) so Hugo
   # exposes it as .Site.GoogleAnalytics. See below (root-level key).
