@@ -1,34 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>Tutorial on The world wide web, AI, me and my learnings!</title>
-    <link>http://localhost:1313/categories/tutorial/</link>
-    <description>Recent content in Tutorial on The world wide web, AI, me and my learnings!</description>
-    <generator>Hugo -- 0.152.2</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sat, 05 Apr 2025 04:27:19 +0530</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/tutorial/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Yourls K8s Installation Guide</title>
-      <link>http://localhost:1313/posts/yourls-k8s-installation-guide/</link>
-      <pubDate>Sat, 05 Apr 2025 04:27:19 +0530</pubDate>
-      <guid>http://localhost:1313/posts/yourls-k8s-installation-guide/</guid>
-      <description>&lt;h1 id=&#34;installing-yourls-on-kubernetes&#34;&gt;Installing YOURLS on Kubernetes&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Tutorial on The world wide web, AI, me and my learnings!</title><link>https://blog.rawlani.com/categories/tutorial/</link><description>Recent content in Tutorial on The world wide web, AI, me and my learnings!</description><generator>Hugo -- 0.152.2</generator><language>en-us</language><lastBuildDate>Sat, 05 Apr 2025 04:27:19 +0530</lastBuildDate><atom:link href="https://blog.rawlani.com/categories/tutorial/index.xml" rel="self" type="application/rss+xml"/><item><title>Yourls K8s Installation Guide</title><link>https://blog.rawlani.com/posts/yourls-k8s-installation-guide/</link><pubDate>Sat, 05 Apr 2025 04:27:19 +0530</pubDate><guid>https://blog.rawlani.com/posts/yourls-k8s-installation-guide/</guid><description>&lt;h1 id="installing-yourls-on-kubernetes"&gt;Installing YOURLS on Kubernetes&lt;/h1&gt;
 &lt;p&gt;This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.&lt;/p&gt;
-&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+&lt;h2 id="prerequisites"&gt;Prerequisites&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;A working Kubernetes cluster&lt;/li&gt;
 &lt;li&gt;Helm installed on your machine&lt;/li&gt;
 &lt;li&gt;Basic knowledge of Kubernetes concepts&lt;/li&gt;
 &lt;li&gt;A domain name pointed to your cluster&amp;rsquo;s ingress controller (we&amp;rsquo;ll use &lt;code&gt;go.example.com&lt;/code&gt; in this guide)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;installation-steps&#34;&gt;Installation Steps&lt;/h2&gt;
-&lt;h3 id=&#34;1-create-a-namespace-for-yourls&#34;&gt;1. Create a Namespace for YOURLS&lt;/h3&gt;
+&lt;h2 id="installation-steps"&gt;Installation Steps&lt;/h2&gt;
+&lt;h3 id="1-create-a-namespace-for-yourls"&gt;1. Create a Namespace for YOURLS&lt;/h3&gt;
 &lt;p&gt;First, create a dedicated namespace for YOURLS:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl create namespace yourls
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;2-configure-values-for-yourls&#34;&gt;2. Configure Values for YOURLS&lt;/h3&gt;
-&lt;p&gt;Create a &lt;code&gt;values.yaml&lt;/code&gt; file with the following configuration:&lt;/p&gt;</description>
-      <content:encoded><![CDATA[<h1 id="installing-yourls-on-kubernetes">Installing YOURLS on Kubernetes</h1>
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;kubectl create namespace yourls
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="2-configure-values-for-yourls"&gt;2. Configure Values for YOURLS&lt;/h3&gt;
+&lt;p&gt;Create a &lt;code&gt;values.yaml&lt;/code&gt; file with the following configuration:&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="installing-yourls-on-kubernetes">Installing YOURLS on Kubernetes</h1>
 <p>This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
@@ -171,7 +155,4 @@ yourls-mariadb-0          1/1     Running   0          3m
 <li>For production use, consider using external database services instead of the bundled MariaDB</li>
 <li>Keep your Kubernetes cluster and YOURLS installation updated to maintain security</li>
 </ul>
-]]></content:encoded>
-    </item>
-  </channel>
-</rss>
+]]></content:encoded></item></channel></rss>

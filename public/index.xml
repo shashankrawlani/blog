@@ -1,31 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>The world wide web, AI, me and my learnings!</title>
-    <link>http://localhost:1313/</link>
-    <description>Recent content on The world wide web, AI, me and my learnings!</description>
-    <generator>Hugo -- 0.152.2</generator>
-    <language>en-us</language>
-    <lastBuildDate>Mon, 21 Apr 2025 17:35:27 +0530</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service</title>
-      <link>http://localhost:1313/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/</link>
-      <pubDate>Mon, 21 Apr 2025 17:35:27 +0530</pubDate>
-      <guid>http://localhost:1313/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/</guid>
-      <description>&lt;p&gt;This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named &lt;code&gt;maata-paarvati&lt;/code&gt; with 4 CPUs and 24 GB RAM.&lt;/p&gt;
-&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>The world wide web, AI, me and my learnings!</title><link>https://blog.rawlani.com/</link><description>Recent content on The world wide web, AI, me and my learnings!</description><generator>Hugo -- 0.152.2</generator><language>en-us</language><lastBuildDate>Mon, 21 Apr 2025 17:35:27 +0530</lastBuildDate><atom:link href="https://blog.rawlani.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service</title><link>https://blog.rawlani.com/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/</link><pubDate>Mon, 21 Apr 2025 17:35:27 +0530</pubDate><guid>https://blog.rawlani.com/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/</guid><description>&lt;p&gt;This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named &lt;code&gt;maata-paarvati&lt;/code&gt; with 4 CPUs and 24 GB RAM.&lt;/p&gt;
+&lt;h2 id="prerequisites"&gt;Prerequisites&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance).&lt;/li&gt;
 &lt;li&gt;Root or sudo access.&lt;/li&gt;
 &lt;li&gt;Network configured to allow TCP ports 80, 443, and 6443.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;1-install-lxd&#34;&gt;1. Install LXD&lt;/h2&gt;
+&lt;h2 id="1-install-lxd"&gt;1. Install LXD&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Install LXD via Snap&lt;/strong&gt;:&lt;/p&gt;</description>
-      <content:encoded><![CDATA[<p>This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named <code>maata-paarvati</code> with 4 CPUs and 24 GB RAM.</p>
+&lt;p&gt;&lt;strong&gt;Install LXD via Snap&lt;/strong&gt;:&lt;/p&gt;</description><content:encoded><![CDATA[<p>This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named <code>maata-paarvati</code> with 4 CPUs and 24 GB RAM.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance).</li>
@@ -364,17 +348,9 @@ kworker2   Ready    &lt;none&gt;                 1m    v1.32.3+k3s1
 <hr>
 <h2 id="conclusion">Conclusion</h2>
 <p>You now have a K3s cluster running inside LXC containers managed by LXD, with NGINX Ingress and a basic NGINX test service accessible at <code>http://nginx-test.local</code>. This setup leverages your Oracle Cloud Free Tier instance efficiently, with Traefik disabled and NGINX handling ingress traffic.</p>
-]]></content:encoded>
-    </item>
-    <item>
-      <title>LXC vs. LXD: Understanding the Differences and Choosing the Right Tool</title>
-      <link>http://localhost:1313/posts/lxc-vs-lxd/</link>
-      <pubDate>Thu, 10 Apr 2025 12:49:17 +0530</pubDate>
-      <guid>http://localhost:1313/posts/lxc-vs-lxd/</guid>
-      <description>&lt;h1 id=&#34;lxc-vs-lxd-understanding-the-differences-and-choosing-the-right-tool&#34;&gt;LXC vs. LXD: Understanding the Differences and Choosing the Right Tool&lt;/h1&gt;
-&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;Linux containers have revolutionized how we deploy and manage applications, offering a lightweight alternative to virtual machines. But with tools like &lt;em&gt;LXC (Linux Containers)&lt;/em&gt; and &lt;em&gt;LXD (Linux Container Daemon)&lt;/em&gt;, choosing the right one can be confusing. &lt;em&gt;Did you know that while both are based on Linux kernel features, LXD builds on LXC for a more user-friendly experience?&lt;/em&gt; In this post, we&amp;rsquo;ll explore what LXC and LXD are, how they differ, and when to use each. By the end, you&amp;rsquo;ll have a clear understanding to make an informed decision for your projects.&lt;/p&gt;</description>
-      <content:encoded><![CDATA[<h1 id="lxc-vs-lxd-understanding-the-differences-and-choosing-the-right-tool">LXC vs. LXD: Understanding the Differences and Choosing the Right Tool</h1>
+]]></content:encoded></item><item><title>LXC vs. LXD: Understanding the Differences and Choosing the Right Tool</title><link>https://blog.rawlani.com/posts/lxc-vs-lxd/</link><pubDate>Thu, 10 Apr 2025 12:49:17 +0530</pubDate><guid>https://blog.rawlani.com/posts/lxc-vs-lxd/</guid><description>&lt;h1 id="lxc-vs-lxd-understanding-the-differences-and-choosing-the-right-tool"&gt;LXC vs. LXD: Understanding the Differences and Choosing the Right Tool&lt;/h1&gt;
+&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Linux containers have revolutionized how we deploy and manage applications, offering a lightweight alternative to virtual machines. But with tools like &lt;em&gt;LXC (Linux Containers)&lt;/em&gt; and &lt;em&gt;LXD (Linux Container Daemon)&lt;/em&gt;, choosing the right one can be confusing. &lt;em&gt;Did you know that while both are based on Linux kernel features, LXD builds on LXC for a more user-friendly experience?&lt;/em&gt; In this post, we&amp;rsquo;ll explore what LXC and LXD are, how they differ, and when to use each. By the end, you&amp;rsquo;ll have a clear understanding to make an informed decision for your projects.&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="lxc-vs-lxd-understanding-the-differences-and-choosing-the-right-tool">LXC vs. LXD: Understanding the Differences and Choosing the Right Tool</h1>
 <h2 id="introduction">Introduction</h2>
 <p>Linux containers have revolutionized how we deploy and manage applications, offering a lightweight alternative to virtual machines. But with tools like <em>LXC (Linux Containers)</em> and <em>LXD (Linux Container Daemon)</em>, choosing the right one can be confusing. <em>Did you know that while both are based on Linux kernel features, LXD builds on LXC for a more user-friendly experience?</em> In this post, we&rsquo;ll explore what LXC and LXD are, how they differ, and when to use each. By the end, you&rsquo;ll have a clear understanding to make an informed decision for your projects.</p>
 <p><em>Insert an image here showing how containers share the host kernel while providing isolated environments.</em></p>
@@ -452,29 +428,21 @@ kworker2   Ready    &lt;none&gt;                 1m    v1.32.3+k3s1
 <hr>
 <h2 id="conclusion">Conclusion</h2>
 <p>In summary, <em>LXC</em> is lightweight but complex, while <em>LXD</em> is user-friendly with advanced features. Now you&rsquo;re equipped to choose based on your needs. Share your experiences with LXC or LXD in the comments below!</p>
-]]></content:encoded>
-    </item>
-    <item>
-      <title>Yourls K8s Installation Guide</title>
-      <link>http://localhost:1313/posts/yourls-k8s-installation-guide/</link>
-      <pubDate>Sat, 05 Apr 2025 04:27:19 +0530</pubDate>
-      <guid>http://localhost:1313/posts/yourls-k8s-installation-guide/</guid>
-      <description>&lt;h1 id=&#34;installing-yourls-on-kubernetes&#34;&gt;Installing YOURLS on Kubernetes&lt;/h1&gt;
+]]></content:encoded></item><item><title>Yourls K8s Installation Guide</title><link>https://blog.rawlani.com/posts/yourls-k8s-installation-guide/</link><pubDate>Sat, 05 Apr 2025 04:27:19 +0530</pubDate><guid>https://blog.rawlani.com/posts/yourls-k8s-installation-guide/</guid><description>&lt;h1 id="installing-yourls-on-kubernetes"&gt;Installing YOURLS on Kubernetes&lt;/h1&gt;
 &lt;p&gt;This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.&lt;/p&gt;
-&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+&lt;h2 id="prerequisites"&gt;Prerequisites&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;A working Kubernetes cluster&lt;/li&gt;
 &lt;li&gt;Helm installed on your machine&lt;/li&gt;
 &lt;li&gt;Basic knowledge of Kubernetes concepts&lt;/li&gt;
 &lt;li&gt;A domain name pointed to your cluster&amp;rsquo;s ingress controller (we&amp;rsquo;ll use &lt;code&gt;go.example.com&lt;/code&gt; in this guide)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;installation-steps&#34;&gt;Installation Steps&lt;/h2&gt;
-&lt;h3 id=&#34;1-create-a-namespace-for-yourls&#34;&gt;1. Create a Namespace for YOURLS&lt;/h3&gt;
+&lt;h2 id="installation-steps"&gt;Installation Steps&lt;/h2&gt;
+&lt;h3 id="1-create-a-namespace-for-yourls"&gt;1. Create a Namespace for YOURLS&lt;/h3&gt;
 &lt;p&gt;First, create a dedicated namespace for YOURLS:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl create namespace yourls
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;2-configure-values-for-yourls&#34;&gt;2. Configure Values for YOURLS&lt;/h3&gt;
-&lt;p&gt;Create a &lt;code&gt;values.yaml&lt;/code&gt; file with the following configuration:&lt;/p&gt;</description>
-      <content:encoded><![CDATA[<h1 id="installing-yourls-on-kubernetes">Installing YOURLS on Kubernetes</h1>
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;kubectl create namespace yourls
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="2-configure-values-for-yourls"&gt;2. Configure Values for YOURLS&lt;/h3&gt;
+&lt;p&gt;Create a &lt;code&gt;values.yaml&lt;/code&gt; file with the following configuration:&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="installing-yourls-on-kubernetes">Installing YOURLS on Kubernetes</h1>
 <p>This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
@@ -617,7 +585,4 @@ yourls-mariadb-0          1/1     Running   0          3m
 <li>For production use, consider using external database services instead of the bundled MariaDB</li>
 <li>Keep your Kubernetes cluster and YOURLS installation updated to maintain security</li>
 </ul>
-]]></content:encoded>
-    </item>
-  </channel>
-</rss>
+]]></content:encoded></item></channel></rss>
