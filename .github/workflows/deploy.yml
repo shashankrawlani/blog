@@ -29,7 +29,10 @@ jobs:
           tar -C ${RUNNER_TEMP} -zxvf /tmp/hugo.tar.gz hugo
 
       - name: Build Site
-        run: ${RUNNER_TEMP}/hugo --minify
+        env:
+          HUGO_ENV: production
+        run: |
+          ${RUNNER_TEMP}/hugo --minify --environment production
 
       - name: Deploy to gh-pages
         if: github.ref == 'refs/heads/main'

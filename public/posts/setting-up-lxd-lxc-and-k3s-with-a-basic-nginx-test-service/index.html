@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto">
+<html lang="en" dir="auto" data-theme="auto">
 
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service | The world wide web, AI, me and my learnings!</title>
 <meta name="keywords" content="">
 <meta name="description" content="This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named maata-paarvati with 4 CPUs and 24 GB RAM.
@@ -21,7 +21,7 @@ Network configured to allow TCP ports 80, 443, and 6443.
 Install LXD via Snap:">
 <meta name="author" content="Shashank Rawlani">
 <link rel="canonical" href="http://localhost:1313/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bf889cda26598b8fbf9d88e87f378ec81e3e60a4fc589c701912a21f415bb359.css" integrity="sha256-v4ic2iZZi4&#43;/nYjofzeOyB4&#43;YKT8WJxwGRKiH0Fbs1k=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.6299a0e01c4910bbb2ff3038aa93c8b60bd9b62279f6c601f3d1093d4dab4a0c.css" integrity="sha256-Ypmg4BxJELuy/zA4qpPItgvZtiJ59sYB89EJPU2rSgw=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -50,116 +50,41 @@ Install LXD via Snap:">
                 --code-block-bg: rgb(46, 46, 51);
                 --code-bg: rgb(55, 56, 62);
                 --border: rgb(51, 51, 51);
+                color-scheme: dark;
             }
 
             .list {
                 background: var(--theme);
             }
 
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
+            .toc {
+                background: var(--entry);
             }
+        }
 
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
             }
         }
 
     </style>
-</noscript><meta property="og:url" content="http://localhost:1313/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/">
-  <meta property="og:site_name" content="The world wide web, AI, me and my learnings!">
-  <meta property="og:title" content="Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service">
-  <meta property="og:description" content="This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named maata-paarvati with 4 CPUs and 24 GB RAM.
-Prerequisites An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance). Root or sudo access. Network configured to allow TCP ports 80, 443, and 6443. 1. Install LXD Install LXD via Snap:">
-  <meta property="og:locale" content="en-us">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2025-04-21T17:35:27+05:30">
-    <meta property="article:modified_time" content="2025-04-21T17:35:27+05:30">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service">
-<meta name="twitter:description" content="This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named maata-paarvati with 4 CPUs and 24 GB RAM.
-Prerequisites
-
-An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance).
-Root or sudo access.
-Network configured to allow TCP ports 80, 443, and 6443.
-
-
-1. Install LXD
-
-
-Install LXD via Snap:">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "http://localhost:1313/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service",
-      "item": "http://localhost:1313/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service",
-  "name": "Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service",
-  "description": "This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named maata-paarvati with 4 CPUs and 24 GB RAM.\nPrerequisites An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance). Root or sudo access. Network configured to allow TCP ports 80, 443, and 6443. 1. Install LXD Install LXD via Snap:\n",
-  "keywords": [
-    
-  ],
-  "articleBody": "This guide details how to set up a lightweight Kubernetes (K3s) cluster using LXD and LXC containers on an Ubuntu 24.04 server, followed by deploying a basic NGINX test service with NGINX Ingress. These steps were tested on an Oracle Cloud Free Tier instance named maata-paarvati with 4 CPUs and 24 GB RAM.\nPrerequisites An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance). Root or sudo access. Network configured to allow TCP ports 80, 443, and 6443. 1. Install LXD Install LXD via Snap:\nsudo snap install lxd Initialize LXD:\nUse default settings for a simple setup:\nsudo lxd init --auto This creates a dir storage pool (default) and a bridge network (lxdbr0).\nAdd User to LXD Group:\nsudo usermod -aG lxd ubuntu newgrp lxd Verify LXD:\nlxc list Should display an empty table initially. 2. Create a Kubernetes Profile for LXC Containers Create the Profile Configuration:\nSave this as k8s-profile.yaml:\nconfig: limits.cpu: \"2\" limits.memory: 2GB limits.memory.swap: \"false\" linux.kernel_modules: ip_tables,ip6_tables,nf_nat,overlay,br_netfilter raw.lxc: | lxc.apparmor.profile=unconfined lxc.cap.drop= lxc.cgroup.devices.allow=a lxc.mount.auto=proc:rw sys:rw security.privileged: \"true\" security.nesting: \"true\" security.syscalls.intercept.mknod: \"true\" security.syscalls.intercept.setxattr: \"true\" description: LXD profile for Kubernetes devices: eth0: name: eth0 nictype: bridged parent: lxdbr0 type: nic kmsg: path: /dev/kmsg source: /dev/console type: unix-char root: path: / pool: default type: disk name: k8s used_by: [] This matches your lxc config show kmaster --expanded output, excluding volatile and proxy settings added later.\nApply the Profile:\nlxc profile create k8s lxc profile edit k8s \u003c k8s-profile.yaml Verify Profile:\nlxc profile show k8s 3. Launch LXC Containers with Ubuntu 24.04 Initialize Containers:\nlxc init ubuntu:24.04 kmaster --profile k8s lxc init ubuntu:24.04 kworker1 --profile k8s lxc init ubuntu:24.04 kworker2 --profile k8s Start Containers:\nlxc start kmaster lxc start kworker1 lxc start kworker2 Verify Containers:\nlxc list Example output (IPs will vary):\n+---------+---------+----------------------+------+-----------+-----------+ | NAME | STATE | IPV4 | IPV6 | TYPE | SNAPSHOTS | +---------+---------+----------------------+------+-----------+-----------+ | kmaster | RUNNING | 10.177.108.101 (eth0)| | CONTAINER | 0 | | kworker1| RUNNING | 10.177.108.79 (eth0) | | CONTAINER | 0 | | kworker2| RUNNING | 10.177.108.57 (eth0) | | CONTAINER | 0 | +---------+---------+----------------------+------+-----------+-----------+ 4. Install K3s and Join the Cluster Prepare kmaster:\nlxc exec kmaster -- bash -c \"apt update \u0026\u0026 apt install -y curl iptables\" Install K3s on kmaster:\nDisable Traefik to use NGINX Ingress later:\nlxc exec kmaster -- bash -c \"curl -sfL https://get.k3s.io | sh -s - server --disable=traefik --write-kubeconfig-mode 644\" Get Node Token:\nlxc exec kmaster -- cat /var/lib/rancher/k3s/server/node-token Save the token (e.g., K10...::server:...). Prepare and Join Worker Nodes:\nFor kworker1:\nlxc exec kworker1 -- bash -c \"apt update \u0026\u0026 apt install -y curl iptables\" lxc exec kworker1 -- bash -c \"curl -sfL https://get.k3s.io | K3S_URL=https://10.177.108.101:6443 K3S_TOKEN= sh -\" For kworker2:\nlxc exec kworker2 -- bash -c \"apt update \u0026\u0026 apt install -y curl iptables\" lxc exec kworker2 -- bash -c \"curl -sfL https://get.k3s.io | K3S_URL=https://10.177.108.101:6443 K3S_TOKEN= sh -\" Verify Cluster:\nlxc exec kmaster -- k3s kubectl get nodes Expected:\nNAME STATUS ROLES AGE VERSION kmaster Ready control-plane,master 5m v1.32.3+k3s1 kworker1 Ready 2m v1.32.3+k3s1 kworker2 Ready 1m v1.32.3+k3s1 Set Up Host Access:\nInstall kubectl on the host:\nsudo snap install kubectl --classic Copy kubeconfig:\nlxc file pull kmaster/etc/rancher/k3s/k3s.yaml ~/.kube/config Edit ~/.kube/config, replace 127.0.0.1 with 10.177.108.101:\nserver: https://10.177.108.101:6443 Test:\nkubectl get nodes Add Port Forwarding for K3s API:\nsudo iptables -t nat -A PREROUTING -p tcp --dport 6443 -j DNAT --to-destination 10.177.108.101:6443 sudo iptables -t nat -A POSTROUTING -j MASQUERADE sudo sysctl -w net.ipv4.ip_forward=1 5. Set Up NGINX Ingress and Deploy a Test Service Install Helm:\ncurl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 sudo bash get_helm.sh Install NGINX Ingress:\nhelm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx helm repo update helm install ingress-nginx ingress-nginx/ingress-nginx \\ --namespace ingress-nginx \\ --create-namespace \\ --set controller.service.type=LoadBalancer Add Proxy Devices for HTTP/HTTPS:\nBased on your lxc config show kmaster --expanded:\nlxc config device add kmaster http proxy listen=tcp:0.0.0.0:80 connect=tcp:127.0.0.1:80 lxc config device add kmaster https proxy listen=tcp:0.0.0.0:443 connect=tcp:127.0.0.1:443 Add Port Forwarding for HTTP/HTTPS:\nGet NGINX service IP:\nkubectl get svc -n ingress-nginx Example: 10.177.108.x. Forward ports:\nsudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.177.108.x:80 sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 10.177.108.x:443 sudo iptables -t nat -A POSTROUTING -j MASQUERADE Deploy a Basic NGINX Test Service:\nCreate nginx-test.yaml:\napiVersion: apps/v1 kind: Deployment metadata: name: nginx-test namespace: default spec: replicas: 1 selector: matchLabels: app: nginx-test template: metadata: labels: app: nginx-test spec: containers: - name: nginx image: nginx:latest ports: - containerPort: 80 --- apiVersion: v1 kind: Service metadata: name: nginx-test namespace: default spec: ports: - port: 80 targetPort: 80 protocol: TCP selector: app: nginx-test --- apiVersion: networking.k8s.io/v1 kind: Ingress metadata: name: nginx-test namespace: default annotations: nginx.ingress.kubernetes.io/rewrite-target: / spec: ingressClassName: nginx rules: - host: nginx-test.local http: paths: - path: / pathType: Prefix backend: service: name: nginx-test port: number: 80 Apply:\nkubectl apply -f nginx-test.yaml Test the NGINX Service:\nUpdate /etc/hosts on your local machine (temporary workaround since nginx-test.local isn’t a real domain):\necho \" nginx-test.local\" | sudo tee -a /etc/hosts Use your Oracle Cloud instance’s public IP (e.g., curl ifconfig.me). Test:\ncurl http://nginx-test.local Should return the NGINX welcome page HTML. Conclusion You now have a K3s cluster running inside LXC containers managed by LXD, with NGINX Ingress and a basic NGINX test service accessible at http://nginx-test.local. This setup leverages your Oracle Cloud Free Tier instance efficiently, with Traefik disabled and NGINX handling ingress traffic.\n",
-  "wordCount" : "888",
-  "inLanguage": "en",
-  "datePublished": "2025-04-21T17:35:27+05:30",
-  "dateModified": "2025-04-21T17:35:27+05:30",
-  "author":{
-    "@type": "Person",
-    "name": "Shashank Rawlani"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "http://localhost:1313/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "The world wide web, AI, me and my learnings!",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "http://localhost:1313/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
+</noscript>
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
+        document.querySelector("html").dataset.theme = 'dark';
     } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
+       document.querySelector("html").dataset.theme = 'light';
     } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
     }
 
 </script>
-
-<header class="header">
+</head>
+<body id="top">
+    <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="http://localhost:1313/" accesskey="h" title="The world wide web, AI, me and my learnings! (Alt + H)">The world wide web, AI, me and my learnings!</a>
@@ -207,6 +132,17 @@ Install LXD via Snap:">
                     <span>Categories</span>
                 </a>
             </li>
+            <li>
+                <a href="https://shashank.rawlani.com/" title="Portfolio">
+                    <span>Portfolio</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
         </ul>
     </nav>
 </header>
@@ -218,7 +154,7 @@ Install LXD via Snap:">
     <h1 class="post-title entry-hint-parent">
       Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service
     </h1>
-    <div class="post-meta"><span title='2025-04-21 17:35:27 +0530 IST'>April 21, 2025</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;Shashank Rawlani
+    <div class="post-meta"><span title='2025-04-21 17:35:27 +0530 IST'>April 21, 2025</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Shashank Rawlani</span>
 
 </div>
   </header> <div class="toc">
@@ -690,9 +626,14 @@ kworker2   Ready    &lt;none&gt;                 1m    v1.32.3+k3s1
 </a>
 
 <script>
-    let menu = document.getElementById('menu')
+    let menu = document.getElementById('menu');
     if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
         menu.onscroll = function () {
             localStorage.setItem("menu-scroll-position", menu.scrollLeft);
         }
@@ -733,11 +674,12 @@ kworker2   Ready    &lt;none&gt;                 1m    v1.32.3+k3s1
 </script>
 <script>
     document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
             localStorage.setItem("pref-theme", 'light');
         } else {
-            document.body.classList.add('dark');
+            html.dataset.theme = 'dark';
             localStorage.setItem("pref-theme", 'dark');
         }
     })
