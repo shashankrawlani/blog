@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto">
+<html lang="en" dir="auto" data-theme="auto">
 
 <head>
-	<meta name="generator" content="Hugo 0.145.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+	<meta name="generator" content="Hugo 0.152.2"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>The world wide web, AI, me and my learnings!</title>
 
 <meta name="description" content="This blog is my scribble pad for all things tech. From AI experiments to web tinkering, from setup guides to quick scripts — it’s where I document what I learn, build, and break (and fix again).">
 <meta name="author" content="Shashank Rawlani">
 <link rel="canonical" href="http://localhost:1313/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bf889cda26598b8fbf9d88e87f378ec81e3e60a4fc589c701912a21f415bb359.css" integrity="sha256-v4ic2iZZi4&#43;/nYjofzeOyB4&#43;YKT8WJxwGRKiH0Fbs1k=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.6299a0e01c4910bbb2ff3038aa93c8b60bd9b62279f6c601f3d1093d4dab4a0c.css" integrity="sha256-Ypmg4BxJELuy/zA4qpPItgvZtiJ59sYB89EJPU2rSgw=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -19,8 +19,8 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml">
-<link rel="alternate" type="application/json" href="http://localhost:1313/index.json">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="rss">
+<link rel="alternate" type="application/json" href="http://localhost:1313/index.json" title="json">
 <link rel="alternate" hreflang="en" href="http://localhost:1313/">
 <noscript>
     <style>
@@ -42,60 +42,41 @@
                 --code-block-bg: rgb(46, 46, 51);
                 --code-bg: rgb(55, 56, 62);
                 --border: rgb(51, 51, 51);
+                color-scheme: dark;
             }
 
             .list {
                 background: var(--theme);
             }
 
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
+            .toc {
+                background: var(--entry);
             }
+        }
 
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
             }
         }
 
     </style>
-</noscript><meta property="og:url" content="http://localhost:1313/">
-  <meta property="og:site_name" content="The world wide web, AI, me and my learnings!">
-  <meta property="og:title" content="The world wide web, AI, me and my learnings!">
-  <meta property="og:description" content="This blog is my scribble pad for all things tech. From AI experiments to web tinkering, from setup guides to quick scripts — it’s where I document what I learn, build, and break (and fix again).">
-  <meta property="og:locale" content="en-us">
-  <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="The world wide web, AI, me and my learnings!">
-<meta name="twitter:description" content="This blog is my scribble pad for all things tech. From AI experiments to web tinkering, from setup guides to quick scripts — it’s where I document what I learn, build, and break (and fix again).">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "The world wide web, AI, me and my learnings!",
-  "url": "http://localhost:1313/",
-  "description": "This blog is my scribble pad for all things tech. From AI experiments to web tinkering, from setup guides to quick scripts — it’s where I document what I learn, build, and break …",
-  "logo": "http://localhost:1313/favicon.ico",
-  "sameAs": [
-      "https://github.com/shashankrawlani", "https://twitter.com/shashankrawlani", "https://linkedin.com/in/shashankrawlani", "mailto:shashank@rawlani.com"
-  ]
-}
-</script>
-</head>
-
-<body class="list" id="top">
+</noscript>
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
+        document.querySelector("html").dataset.theme = 'dark';
     } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
+       document.querySelector("html").dataset.theme = 'light';
     } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
     }
 
 </script>
-
-<header class="header">
+</head>
+<body class="list" id="top">
+    <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="http://localhost:1313/" accesskey="h" title="The world wide web, AI, me and my learnings! (Alt + H)">The world wide web, AI, me and my learnings!</a>
@@ -141,6 +122,17 @@
             <li>
                 <a href="http://localhost:1313/categories/" title="Categories">
                     <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://shashank.rawlani.com/" title="Portfolio">
+                    <span>Portfolio</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
                 </a>
             </li>
         </ul>
@@ -209,7 +201,7 @@
 Prerequisites An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance). Root or sudo access. Network configured to allow TCP ports 80, 443, and 6443. 1. Install LXD Install LXD via Snap:
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-04-21 17:35:27 +0530 IST'>April 21, 2025</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;Shashank Rawlani</footer>
+  <footer class="entry-footer"><span title='2025-04-21 17:35:27 +0530 IST'>April 21, 2025</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Shashank Rawlani</span></footer>
   <a class="entry-link" aria-label="post link to Setting Up Lxd Lxc and K3s With a Basic Nginx Test Service" href="http://localhost:1313/posts/setting-up-lxd-lxc-and-k3s-with-a-basic-nginx-test-service/"></a>
 </article>
 
@@ -222,7 +214,7 @@ Prerequisites An Ubuntu 24.04 server (e.g., Oracle Cloud Free Tier instance). Ro
     <p>LXC vs. LXD: Understanding the Differences and Choosing the Right Tool Introduction Linux containers have revolutionized how we deploy and manage applications, offering a lightweight alternative to virtual machines. But with tools like LXC (Linux Containers) and LXD (Linux Container Daemon), choosing the right one can be confusing. Did you know that while both are based on Linux kernel features, LXD builds on LXC for a more user-friendly experience? In this post, we’ll explore what LXC and LXD are, how they differ, and when to use each. By the end, you’ll have a clear understanding to make an informed decision for your projects.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-04-10 12:49:17 +0530 IST'>April 10, 2025</span>&nbsp;·&nbsp;2 min&nbsp;·&nbsp;Shashank Rawlani</footer>
+  <footer class="entry-footer"><span title='2025-04-10 12:49:17 +0530 IST'>April 10, 2025</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Shashank Rawlani</span></footer>
   <a class="entry-link" aria-label="post link to LXC vs. LXD: Understanding the Differences and Choosing the Right Tool" href="http://localhost:1313/posts/lxc-vs-lxd/"></a>
 </article>
 
@@ -237,7 +229,7 @@ Prerequisites A working Kubernetes cluster Helm installed on your machine Basic 
 kubectl create namespace yourls 2. Configure Values for YOURLS Create a values.yaml file with the following configuration:
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-04-05 04:27:19 +0530 IST'>April 5, 2025</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Shashank Rawlani</footer>
+  <footer class="entry-footer"><span title='2025-04-05 04:27:19 +0530 IST'>April 5, 2025</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>Shashank Rawlani</span></footer>
   <a class="entry-link" aria-label="post link to Yourls K8s Installation Guide" href="http://localhost:1313/posts/yourls-k8s-installation-guide/"></a>
 </article>
     </main>
@@ -258,9 +250,14 @@ kubectl create namespace yourls 2. Configure Values for YOURLS Create a values.y
 </a>
 
 <script>
-    let menu = document.getElementById('menu')
+    let menu = document.getElementById('menu');
     if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
         menu.onscroll = function () {
             localStorage.setItem("menu-scroll-position", menu.scrollLeft);
         }
@@ -301,11 +298,12 @@ kubectl create namespace yourls 2. Configure Values for YOURLS Create a values.y
 </script>
 <script>
     document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
             localStorage.setItem("pref-theme", 'light');
         } else {
-            document.body.classList.add('dark');
+            html.dataset.theme = 'dark';
             localStorage.setItem("pref-theme", 'dark');
         }
     })

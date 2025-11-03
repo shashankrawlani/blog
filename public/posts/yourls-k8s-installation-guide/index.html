@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto">
+<html lang="en" dir="auto" data-theme="auto">
 
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Yourls K8s Installation Guide | The world wide web, AI, me and my learnings!</title>
 <meta name="keywords" content="kubernetes, k8s, yourls, letsencrypt, url shortener">
 <meta name="description" content="Installing YOURLS on Kubernetes
@@ -24,7 +24,7 @@ kubectl create namespace yourls
 Create a values.yaml file with the following configuration:">
 <meta name="author" content="Shashank Rawlani">
 <link rel="canonical" href="http://localhost:1313/posts/yourls-k8s-installation-guide/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bf889cda26598b8fbf9d88e87f378ec81e3e60a4fc589c701912a21f415bb359.css" integrity="sha256-v4ic2iZZi4&#43;/nYjofzeOyB4&#43;YKT8WJxwGRKiH0Fbs1k=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.6299a0e01c4910bbb2ff3038aa93c8b60bd9b62279f6c601f3d1093d4dab4a0c.css" integrity="sha256-Ypmg4BxJELuy/zA4qpPItgvZtiJ59sYB89EJPU2rSgw=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -53,125 +53,41 @@ Create a values.yaml file with the following configuration:">
                 --code-block-bg: rgb(46, 46, 51);
                 --code-bg: rgb(55, 56, 62);
                 --border: rgb(51, 51, 51);
+                color-scheme: dark;
             }
 
             .list {
                 background: var(--theme);
             }
 
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
+            .toc {
+                background: var(--entry);
             }
+        }
 
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
             }
         }
 
     </style>
-</noscript><meta property="og:url" content="http://localhost:1313/posts/yourls-k8s-installation-guide/">
-  <meta property="og:site_name" content="The world wide web, AI, me and my learnings!">
-  <meta property="og:title" content="Yourls K8s Installation Guide">
-  <meta property="og:description" content="Installing YOURLS on Kubernetes This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.
-Prerequisites A working Kubernetes cluster Helm installed on your machine Basic knowledge of Kubernetes concepts A domain name pointed to your cluster’s ingress controller (we’ll use go.example.com in this guide) Installation Steps 1. Create a Namespace for YOURLS First, create a dedicated namespace for YOURLS:
-kubectl create namespace yourls 2. Configure Values for YOURLS Create a values.yaml file with the following configuration:">
-  <meta property="og:locale" content="en-us">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2025-04-05T04:27:19+05:30">
-    <meta property="article:modified_time" content="2025-04-05T04:27:19+05:30">
-    <meta property="article:tag" content="Kubernetes">
-    <meta property="article:tag" content="K8s">
-    <meta property="article:tag" content="Yourls">
-    <meta property="article:tag" content="Letsencrypt">
-    <meta property="article:tag" content="Url Shortener">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Yourls K8s Installation Guide">
-<meta name="twitter:description" content="Installing YOURLS on Kubernetes
-This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.
-Prerequisites
-
-A working Kubernetes cluster
-Helm installed on your machine
-Basic knowledge of Kubernetes concepts
-A domain name pointed to your cluster&rsquo;s ingress controller (we&rsquo;ll use go.example.com in this guide)
-
-Installation Steps
-1. Create a Namespace for YOURLS
-First, create a dedicated namespace for YOURLS:
-kubectl create namespace yourls
-2. Configure Values for YOURLS
-Create a values.yaml file with the following configuration:">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "http://localhost:1313/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Yourls K8s Installation Guide",
-      "item": "http://localhost:1313/posts/yourls-k8s-installation-guide/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Yourls K8s Installation Guide",
-  "name": "Yourls K8s Installation Guide",
-  "description": "Installing YOURLS on Kubernetes This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.\nPrerequisites A working Kubernetes cluster Helm installed on your machine Basic knowledge of Kubernetes concepts A domain name pointed to your cluster\u0026rsquo;s ingress controller (we\u0026rsquo;ll use go.example.com in this guide) Installation Steps 1. Create a Namespace for YOURLS First, create a dedicated namespace for YOURLS:\nkubectl create namespace yourls 2. Configure Values for YOURLS Create a values.yaml file with the following configuration:\n",
-  "keywords": [
-    "kubernetes", "k8s", "yourls", "letsencrypt", "url shortener"
-  ],
-  "articleBody": "Installing YOURLS on Kubernetes This guide walks through the process of deploying YOURLS (Your Own URL Shortener) on a Kubernetes cluster using Helm.\nPrerequisites A working Kubernetes cluster Helm installed on your machine Basic knowledge of Kubernetes concepts A domain name pointed to your cluster’s ingress controller (we’ll use go.example.com in this guide) Installation Steps 1. Create a Namespace for YOURLS First, create a dedicated namespace for YOURLS:\nkubectl create namespace yourls 2. Configure Values for YOURLS Create a values.yaml file with the following configuration:\nyourls: username: \"admin\" # Change to your desired admin username password: \"securepassword\" # Change to a secure password cookieKey: \"randomsecurestring\" # Use a random string for cookie encryption # The following two settings are critical for proper site URL configuration scheme: \"https\" domain: \"go.example.com\" mariadb: enabled: true # Use built-in MariaDB auth: username: \"yourlsdb\" # Database username password: \"dbpassword\" # Database password database: \"yourls\" # Database name rootPassword: \"rootpass\" # Root password for MariaDB persistence: enabled: true # Enable persistent storage 3. Install YOURLS using Helm Deploy YOURLS using the Helm chart with your custom values:\nhelm upgrade -f values.yaml --install yourls yourls/yourls --namespace yourls 4. Set Up TLS with cert-manager Install cert-manager to handle TLS certificates:\nkubectl create namespace cert-manager helm install cert-manager bitnami/cert-manager --namespace cert-manager --set installCRDs=true Create a ClusterIssuer for Let’s Encrypt:\n# letsencrypt-prod.yaml apiVersion: cert-manager.io/v1 kind: ClusterIssuer metadata: name: letsencrypt-prod spec: acme: server: https://acme-v02.api.letsencrypt.org/directory email: admin@example.com # Change to your email privateKeySecretRef: name: letsencrypt-prod solvers: - http01: ingress: class: nginx Apply the ClusterIssuer:\nkubectl apply -f letsencrypt-prod.yaml 5. Configure Ingress for YOURLS Create an ingress configuration for YOURLS:\n# yourls-ingress.yaml apiVersion: networking.k8s.io/v1 kind: Ingress metadata: name: yourls namespace: yourls annotations: cert-manager.io/cluster-issuer: \"letsencrypt-prod\" spec: ingressClassName: nginx tls: - hosts: - go.example.com secretName: go-example-com-tls rules: - host: go.example.com http: paths: - path: / pathType: Prefix backend: service: name: yourls port: number: 80 Apply the ingress configuration:\nkubectl apply -f yourls-ingress.yaml Testing Your Installation 1. Verify Pod Status Check that the YOURLS and MariaDB pods are running:\nkubectl get pods -n yourls Expected output:\nNAME READY STATUS RESTARTS AGE yourls-xxxxxxxxxx-xxxxx 1/1 Running 0 3m yourls-mariadb-0 1/1 Running 0 3m 2. Check Environment Variables Verify that the YOURLS_SITE environment variable is set correctly:\nkubectl exec -it -n yourls deploy/yourls -- env | grep YOURLS_SITE Expected output:\nYOURLS_SITE=https://go.example.com 3. Test TLS Certificate Verify that the SSL certificate is properly issued:\nkubectl get certificate -n yourls Test the HTTPS connection:\ncurl -Iv https://go.example.com You should see a successful HTTPS response with a valid certificate.\n4. Access YOURLS Admin Interface Open your browser and navigate to https://go.example.com/admin to access the YOURLS admin interface.\nLogin using the credentials you specified in the values.yaml file.\nTroubleshooting YOURLS_SITE Not Set Correctly If the YOURLS_SITE environment variable is not being set correctly, make sure you’ve configured both scheme and domain in your values.yaml:\nyourls: scheme: \"https\" domain: \"go.example.com\" Ingress Not Working Check the status of your ingress:\nkubectl describe ingress yourls -n yourls Ensure your DNS records are correctly pointing to your Kubernetes cluster’s ingress controller.\nCertificate Issues Check certificate status:\nkubectl describe certificate go-example-com-tls -n yourls Look for any errors in the cert-manager logs:\nkubectl logs -n cert-manager -l app=cert-manager Uninstallation To completely remove YOURLS from your cluster:\n# Uninstall the YOURLS Helm release helm uninstall yourls -n yourls # Delete any persistent volume claims kubectl delete pvc --all -n yourls # Delete the namespace kubectl delete namespace yourls Optional: Remove cert-manager if it’s no longer needed:\nhelm uninstall cert-manager -n cert-manager kubectl delete namespace cert-manager Notes Remember to back up your MariaDB data before making major changes to your deployment For production use, consider using external database services instead of the bundled MariaDB Keep your Kubernetes cluster and YOURLS installation updated to maintain security ",
-  "wordCount" : "624",
-  "inLanguage": "en",
-  "datePublished": "2025-04-05T04:27:19+05:30",
-  "dateModified": "2025-04-05T04:27:19+05:30",
-  "author":{
-    "@type": "Person",
-    "name": "Shashank Rawlani"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "http://localhost:1313/posts/yourls-k8s-installation-guide/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "The world wide web, AI, me and my learnings!",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "http://localhost:1313/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
+</noscript>
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
+        document.querySelector("html").dataset.theme = 'dark';
     } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
+       document.querySelector("html").dataset.theme = 'light';
     } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
     }
 
 </script>
-
-<header class="header">
+</head>
+<body id="top">
+    <header class="header">
     <nav class="nav">
         <div class="logo">
             <a href="http://localhost:1313/" accesskey="h" title="The world wide web, AI, me and my learnings! (Alt + H)">The world wide web, AI, me and my learnings!</a>
@@ -219,6 +135,17 @@ Create a values.yaml file with the following configuration:">
                     <span>Categories</span>
                 </a>
             </li>
+            <li>
+                <a href="https://shashank.rawlani.com/" title="Portfolio">
+                    <span>Portfolio</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
         </ul>
     </nav>
 </header>
@@ -230,7 +157,7 @@ Create a values.yaml file with the following configuration:">
     <h1 class="post-title entry-hint-parent">
       Yourls K8s Installation Guide
     </h1>
-    <div class="post-meta"><span title='2025-04-05 04:27:19 +0530 IST'>April 5, 2025</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Shashank Rawlani
+    <div class="post-meta"><span title='2025-04-05 04:27:19 +0530 IST'>April 5, 2025</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>Shashank Rawlani</span>
 
 </div>
   </header> <div class="toc">
@@ -544,9 +471,14 @@ yourls-mariadb-0          1/1     Running   0          3m
 </a>
 
 <script>
-    let menu = document.getElementById('menu')
+    let menu = document.getElementById('menu');
     if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
         menu.onscroll = function () {
             localStorage.setItem("menu-scroll-position", menu.scrollLeft);
         }
@@ -587,11 +519,12 @@ yourls-mariadb-0          1/1     Running   0          3m
 </script>
 <script>
     document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
             localStorage.setItem("pref-theme", 'light');
         } else {
-            document.body.classList.add('dark');
+            html.dataset.theme = 'dark';
             localStorage.setItem("pref-theme", 'dark');
         }
     })
